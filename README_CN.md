@@ -6,6 +6,7 @@
 [![Platform: Linux | Windows | OpenWrt](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20OpenWrt-blue.svg)](#)
 [![Qualcomm SDX72](https://img.shields.io/badge/Modem-Qualcomm%20Snapdragon%20X72%20(SDX72)-orange.svg)](#)
 [![Foxconn T99W640](https://img.shields.io/badge/OEM-Foxconn%20T99W640-green.svg)](#)
+[![Sponsor](https://img.shields.io/badge/赞助商-Discord%20Supporter-pink?logo=discord&logoColor=white)](https://discord.com/users/836215401431564299)
 
 **[English (英文文档)](README.md) | [中文说明 (Chinese)](README_CN.md)**
 
@@ -176,6 +177,28 @@ sudo ./dw5934e-voice-control dial 10010 --confirm
 1. **不包含任何专有固件与商业驱动二进制：** 本仓库严格遵守知识产权法律，**绝不分发**高通专有固件（`.mbn`、`.bin`、`.dat`）或戴尔官方 `.exe` 驱动包。用户需直接前往戴尔官方服务支持网站下载官方固件包。
 2. **严格脱敏与隐私保护：** 所有测试配置、测试日志已完全去除真实客户 IMEI、序列号、私有 IP 及运营商敏感凭证。
 3. **无线电射频合规性：** 使用本套件时请遵守当地无线电管理法规。
+
+---
+
+## 💖 特别鸣谢与赞助商致谢 (Special Thanks & Sponsor)
+
+<div align="center">
+
+### 🌟 本项目的核心赞助者与鼎力支持者
+
+在此怀着无比诚挚与感激的心情，向本项目的赞助商致以最崇高的谢意：
+
+### 👉 **[Discord 赞助者主页：836215401431564299](https://discord.com/users/836215401431564299)** 👈
+
+</div>
+
+> [!NOTE]
+> **致赞助商的衷心感谢信：**  
+> 本项目能够从最初的实验室逆向分析、硬件测试样卡采购、转接底板工程测试，到全套 Windows 11 保守安装器、OpenWrt 路由器固件适配、Linux QMI 通话工具链、以及 3D 打印加厚 CPE 外壳的完整落地与全面开源，**离不开赞助商始终如一的慷慨赞助、无比的信任与坚定支持！**
+>
+> 正是因为有您对开源精神与底层硬件工程的倾力投入，这项充满挑战的企业级 5G 模块攻关成果才得以跨越技术壁垒，毫无保留地公布给全球开发者与开源社区。  
+> 
+> **致以最由衷的感谢与敬意，感谢您让这一切成为现实！** 💐🙏✨
 
 ---
 

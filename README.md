@@ -6,6 +6,7 @@
 [![Platform: Linux | Windows | OpenWrt](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20OpenWrt-blue.svg)](#)
 [![Qualcomm SDX72](https://img.shields.io/badge/Modem-Qualcomm%20Snapdragon%20X72%20(SDX72)-orange.svg)](#)
 [![Foxconn T99W640](https://img.shields.io/badge/OEM-Foxconn%20T99W640-green.svg)](#)
+[![Sponsor](https://img.shields.io/badge/Sponsored%20by-Discord%20Supporter-pink?logo=discord&logoColor=white)](https://discord.com/users/836215401431564299)
 
 **[English](README.md) | [中文说明 (Chinese)](README_CN.md)**
 
@@ -174,6 +175,26 @@ Contains formal investigation whitepapers:
 - **No Proprietary Firmwares:** This repository contains no proprietary firmware images (`.mbn`, `.bin`, `.dat`) or official Dell `.exe` installers. All drivers must be downloaded directly from Dell official support.
 - **Privacy First:** All test configurations, scripts, and logs are completely sanitized of real IMEIs, serial numbers, and private credentials.
 - **RF Regulatory:** Use only in compliance with local radio regulatory policies.
+
+---
+
+## 💖 Special Thanks & Sponsorship
+
+<div align="center">
+
+### 🌟 Project Sponsor & Core Supporter
+
+A very special, heartfelt thank you to our visionary sponsor:
+
+### 👉 **[Discord: @836215401431564299](https://discord.com/users/836215401431564299)** 👈
+
+</div>
+
+> [!NOTE]
+> **A Message of Gratitude:**  
+> This open-source project — including the in-depth reverse-engineering, hardware acquisition, automated Windows 11 installer, OpenWrt AutoNet integration, userspace voice control tooling, and physical 3D printable CAD models for the DW5934e / Qualcomm SDX72 platform — **would never have been possible without the generous backing, unwavering trust, and steadfast support of our sponsor**.
+>
+> Your dedication to open-source hardware research and community-driven engineering has turned complex enterprise-grade cellular technology into an open, accessible reality for developers and users worldwide. We express our deepest gratitude for your partnership and vision! 🙏✨
 
 ---
 
