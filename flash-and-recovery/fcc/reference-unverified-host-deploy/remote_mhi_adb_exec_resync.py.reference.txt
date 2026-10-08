@@ -1,0 +1,152 @@
+#!/bin/false
+exit 126
+#!/usr/bin/env python3
+"""ADB exec client that tolerates stale packets after an adbd transport restart."""
+
+from __future__ import annotations
+
+import argparse
+import os
+import select
+import struct
+import sys
+import time
+
+
+HEADER = struct.Struct("<6I")
+
+
+def value(name: bytes) -> int:
+    return int.from_bytes(name, "little")
+
+
+def name(value_: int) -> str:
+    return value_.to_bytes(4, "little").decode("ascii", errors="replace")
+
+
+def checksum(data: bytes) -> int:
+    return sum(data) & 0xFFFFFFFF
+
+
+def write_all(fd: int, data: bytes) -> None:
+    view = memoryview(data)
+    while view:
+        written = os.write(fd, view)
+        if written <= 0:
+            raise RuntimeError("ADB write stalled")
+        view = view[written:]
+
+
+def send(fd: int, command: bytes, arg0: int, arg1: int, data: bytes = b"") -> None:
+    cv = value(command)
+    write_all(
+        fd,
+        HEADER.pack(cv, arg0, arg1, len(data), checksum(data), cv ^ 0xFFFFFFFF) + data,
+    )
+
+
+class Reader:
+    def __init__(self, fd: int):
+        self.fd = fd
+        self.buf = bytearray()
+
+    def packet(self, deadline: float) -> tuple[str, int, int, bytes]:
+        while len(self.buf) < HEADER.size:
+            self._more(deadline)
+        command, arg0, arg1, length, expected, magic = HEADER.unpack_from(self.buf)
+        if length > 8 * 1024 * 1024 or magic != (command ^ 0xFFFFFFFF):
+            # Lose one byte and scan for the next plausible packet header.
+            del self.buf[0]
+            return self.packet(deadline)
+        total = HEADER.size + length
+        while len(self.buf) < total:
+            self._more(deadline)
+        data = bytes(self.buf[HEADER.size:total])
+        del self.buf[:total]
+        if checksum(data) != expected:
+            return self.packet(deadline)
+        return name(command), arg0, arg1, data
+
+    def _more(self, deadline: float) -> None:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("ADB receive timeout")
+        ready, _, _ = select.select([self.fd], [], [], remaining)
+        if not ready:
+            raise TimeoutError("ADB receive timeout")
+        chunk = os.read(self.fd, 65536)
+        if not chunk:
+            raise EOFError("ADB EOF")
+        self.buf.extend(chunk)
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    command_group = ap.add_mutually_exclusive_group(required=True)
+    command_group.add_argument("command", nargs="?")
+    command_group.add_argument("--command-file")
+    ap.add_argument("--device", default="/dev/mhi_ADB")
+    ap.add_argument("--timeout", type=float, default=20)
+    args = ap.parse_args()
+
+    if args.command_file:
+        with open(args.command_file, "r", encoding="utf-8") as handle:
+            command = handle.read()
+    else:
+        command = args.command
+
+    fd = os.open(args.device, os.O_RDWR | getattr(os, "O_NOCTTY", 0))
+    reader = Reader(fd)
+    deadline = time.monotonic() + args.timeout
+    local_id = (os.getpid() & 0x7FFF) + 1
+    remote_id: int | None = None
+    opened = False
+    resets = 0
+    output = 0
+
+    try:
+        send(fd, b"CNXN", 0x01000001, 4096, b"host::\0")
+        while time.monotonic() < deadline:
+            packet, arg0, arg1, data = reader.packet(deadline)
+            if packet == "CNXN":
+                resets += 1
+                remote_id = None
+                send(fd, b"OPEN", local_id, 0, b"exec:" + command.encode() + b"\0")
+                opened = True
+                continue
+            if packet == "AUTH":
+                # This engineering fixture normally has authentication disabled.
+                continue
+            if packet == "OKAY":
+                if arg1 == local_id:
+                    remote_id = arg0
+                continue
+            if packet == "WRTE":
+                if arg1 == local_id:
+                    remote_id = arg0
+                    sys.stdout.buffer.write(data)
+                    sys.stdout.buffer.flush()
+                    output += len(data)
+                    send(fd, b"OKAY", local_id, remote_id)
+                else:
+                    # Close a stale logical stream left by an earlier short-lived client.
+                    send(fd, b"OKAY", arg1, arg0)
+                    send(fd, b"CLSE", arg1, arg0)
+                continue
+            if packet == "CLSE":
+                if arg1 == local_id or (remote_id is not None and arg0 == remote_id):
+                    if remote_id is not None:
+                        send(fd, b"CLSE", local_id, remote_id)
+                    print(
+                        f"\nADB_RESYNC_OK bytes={output} transport_resets={resets}",
+                        file=sys.stderr,
+                    )
+                    return 0
+                continue
+        raise TimeoutError(f"command deadline; opened={opened} resets={resets} bytes={output}")
+    finally:
+        os.close(fd)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

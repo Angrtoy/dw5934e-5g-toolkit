@@ -1,0 +1,229 @@
+#!/bin/false
+exit 126
+#!/usr/bin/env python3
+"""Request DMS Online exactly once on the guarded current E11D module.
+
+This is a transient activation step, not a persistence mechanism.  It requires
+the already-verified current-module identity, RF selector/baseline, MPSS FCC EFS
+marker and unlocked FCC state.  It records the exact QMI response and never
+retries the state-changing request.
+"""
+
+from __future__ import annotations
+
+import argparse
+import fcntl
+import json
+import os
+from pathlib import Path
+import stat
+import time
+from typing import Any
+
+import guarded_current_module_fcc_action3_20260826 as guard
+
+
+MSG_DMS_SET_OPERATING_MODE = 0x002E
+MODE_ONLINE = 0
+MODE_SHUTTING_DOWN = 5
+TOKEN = "CURRENT-E11D-DMS-ONLINE-ONCE-20260826"
+ALLOWED_ROOT = Path("<REDACTED-PRIVATE-PATH>")
+LOCK_PATH = Path("/run/lock/e11d_current_module_online_once_20260826.lock")
+
+
+def fsync_write(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("wb") as handle:
+        handle.write(data)
+        handle.flush()
+        os.fsync(handle.fileno())
+    fd = os.open(path.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def save_json(path: Path, value: object) -> None:
+    fsync_write(
+        path,
+        (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("ascii"),
+    )
+
+
+def sanitize_state(state: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: state[key]
+        for key in (
+            "identity_stable",
+            "identity_hash_match",
+            "selector_a",
+            "selector_b",
+            "base_a",
+            "base_b",
+            "fcc_flag_a",
+            "fcc_flag_b",
+            "fcc",
+            "dms_mode",
+        )
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--execute-token", required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    args = parser.parse_args()
+    if args.execute_token != TOKEN:
+        raise RuntimeError("execute token mismatch")
+
+    output = args.output_dir.resolve()
+    allowed = ALLOWED_ROOT.resolve()
+    if output == allowed or allowed not in output.parents:
+        raise RuntimeError("output directory outside guarded root")
+    if os.geteuid() != 0:
+        raise RuntimeError("must run as root")
+    if guard.read_ascii(guard.PCI_DIR / "vendor") != "0x105b":
+        raise RuntimeError("PCI vendor mismatch")
+    if guard.read_ascii(guard.PCI_DIR / "device") != "0xe11d":
+        raise RuntimeError("PCI device mismatch")
+    if not stat.S_ISCHR(os.stat(guard.DEVICE).st_mode):
+        raise RuntimeError("QMI endpoint unavailable")
+    if guard.device_openers():
+        raise RuntimeError("QMI endpoint already in use")
+
+    output.mkdir(parents=True, exist_ok=False)
+    LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    lock_fd = os.open(LOCK_PATH, os.O_RDWR | os.O_CREAT, 0o600)
+    fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+    report: dict[str, Any] = {
+        "state": "preflight",
+        "started_unix": time.time(),
+        "set_online_attempted": False,
+        "set_online_attempt_count": 0,
+        "verified": False,
+    }
+    qmi = guard.raw.Qmi(guard.DEVICE)
+    dms_cid: int | None = None
+    fox_cid: int | None = None
+    try:
+        dms_cid = guard.allocate(qmi, guard.SERVICE_DMS)
+        fox_cid = guard.allocate(qmi, guard.SERVICE_FOX)
+        if guard.device_openers(exclude_pid=os.getpid()):
+            raise RuntimeError("QMI endpoint lost exclusivity")
+
+        before = guard.snapshot(qmi, dms_cid, fox_cid)
+        guard.validate_common(before)
+        if before["dms_mode"] != MODE_SHUTTING_DOWN:
+            raise RuntimeError("pre-state is not the guarded shutting-down mode")
+        if before["fcc"] != [0, 0]:
+            raise RuntimeError("FCC runtime state is not unlocked")
+        for key in ("fcc_flag_a", "fcc_flag_b"):
+            if not before[key]["exists"] or before[key]["length"] != 0:
+                raise RuntimeError("MPSS persistent FCC marker is not verified")
+        report["before"] = sanitize_state(before)
+        save_json(output / "preflight.json", report)
+
+        if not guard.identity_matches(guard.identity(qmi, dms_cid)):
+            raise RuntimeError("final identity guard failed")
+        if guard.dms_mode(qmi, dms_cid) != MODE_SHUTTING_DOWN:
+            raise RuntimeError("DMS mode changed before request")
+        if guard.device_openers(exclude_pid=os.getpid()):
+            raise RuntimeError("concurrent QMI opener detected")
+
+        report["set_online_attempted"] = True
+        report["set_online_attempt_count"] = 1
+        frame = guard.request_raw(
+            qmi,
+            guard.SERVICE_DMS,
+            dms_cid,
+            MSG_DMS_SET_OPERATING_MODE,
+            guard.raw.tlv(1, bytes([MODE_ONLINE])),
+            timeout=20,
+        )
+        result, error = guard.result_pair(frame)
+        report["set_online_response"] = {"result": result, "error": error}
+        if result != 0 or error != 0:
+            report.update(
+                state="set_online_rejected",
+                verified=False,
+                finished_unix=time.time(),
+            )
+            save_json(output / "transaction.json", report)
+            print(
+                json.dumps(
+                    {
+                        "state": report["state"],
+                        "result": result,
+                        "error": error,
+                    }
+                )
+            )
+            return 3
+
+        modes: list[int] = []
+        for delay in (1.0, 2.0, 3.0):
+            time.sleep(delay)
+            modes.append(guard.dms_mode(qmi, dms_cid))
+        report["post_modes"] = modes
+        flag = guard.read_efs(
+            qmi,
+            fox_cid,
+            guard.FCC_FLAG_PATH,
+            allow_absent=True,
+        )
+        report["post_fcc_flag"] = {
+            "exists": flag[0],
+            **guard.meta(flag[1]),
+        }
+        report["post_fcc"] = [
+            guard.get_fcc(qmi, fox_cid),
+            guard.get_fcc(qmi, fox_cid),
+        ]
+        report["post_identity_hash_match"] = guard.identity_matches(
+            guard.identity(qmi, dms_cid)
+        )
+        verified = (
+            modes == [MODE_ONLINE, MODE_ONLINE, MODE_ONLINE]
+            and flag[0]
+            and len(flag[1]) == 0
+            and report["post_fcc"] == [0, 0]
+            and report["post_identity_hash_match"]
+        )
+        report.update(
+            state="online_verified" if verified else "online_response_unstable",
+            verified=verified,
+            finished_unix=time.time(),
+        )
+        save_json(output / "transaction.json", report)
+        print(json.dumps({"state": report["state"], "verified": verified}))
+        return 0 if verified else 4
+    except Exception as exc:
+        report.update(
+            state="failed",
+            error=f"{type(exc).__name__}: {exc}",
+            verified=False,
+            finished_unix=time.time(),
+        )
+        save_json(output / "transaction.json", report)
+        print(json.dumps({"state": "failed", "verified": False}))
+        return 2
+    finally:
+        if fox_cid is not None:
+            try:
+                guard.raw.release(qmi, guard.SERVICE_FOX, fox_cid)
+            except Exception:
+                pass
+        if dms_cid is not None:
+            try:
+                guard.raw.release(qmi, guard.SERVICE_DMS, dms_cid)
+            except Exception:
+                pass
+        qmi.close()
+        fcntl.flock(lock_fd, fcntl.LOCK_UN)
+        os.close(lock_fd)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

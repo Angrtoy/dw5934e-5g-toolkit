@@ -1,0 +1,70 @@
+{
+  "purpose": "Mechanical printed-hole trial coupon only; not an MF650 shell or RF validation fixture.",
+  "parameters": {
+    "units": "mm",
+    "thickness": 2.4,
+    "plate_length": 142.0,
+    "plate_width": 32.0,
+    "corner_radius": 4.0,
+    "hole_diameters": [
+      6.4,
+      6.5,
+      6.6,
+      6.7,
+      6.8
+    ],
+    "hole_pitch": 25.0,
+    "engraving_depth": 0.4,
+    "label_font_height": 4.5
+  },
+  "outputs": {
+    "step": "C:\\Users\\19570\\Documents\\ChatGPT\\dw5934e usb支持\\mf650\\fit_coupon\\sma_hole_fit_coupon.step",
+    "stl": "C:\\Users\\19570\\Documents\\ChatGPT\\dw5934e usb支持\\mf650\\fit_coupon\\sma_hole_fit_coupon.stl"
+  },
+  "cad_valid": true,
+  "reopened_step_valid": true,
+  "volume_mm3": 9835.206,
+  "hole_count": 5,
+  "reopened_step_top_holes_x_and_diameter_mm": [
+    [
+      -50.0,
+      6.4
+    ],
+    [
+      -25.0,
+      6.5
+    ],
+    [
+      0.0,
+      6.6
+    ],
+    [
+      25.0,
+      6.7
+    ],
+    [
+      50.0,
+      6.8
+    ]
+  ],
+  "stl_mesh": {
+    "watertight": true,
+    "is_volume": true,
+    "euler_number": -8,
+    "volume_mm3": 9835.342,
+    "bounds_mm": [
+      [
+        -67.0,
+        -16.0,
+        0.0
+      ],
+      [
+        67.0,
+        16.0,
+        2.4
+      ]
+    ],
+    "face_count": 21582
+  },
+  "preview": "C:\\Users\\19570\\Documents\\ChatGPT\\dw5934e usb支持\\mf650\\fit_coupon\\preview.png"
+}

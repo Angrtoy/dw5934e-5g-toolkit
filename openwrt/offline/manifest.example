@@ -1,0 +1,22 @@
+# Copy to "manifest" only after building an exact, offline package bundle.
+# All values are mandatory.  This example is intentionally not installable.
+format=dw5934e-autonet-offline-v1
+board_name=REPLACE_WITH_/tmp/sysinfo/board_name
+kernel_abi=REPLACE_WITH_opkg_status_kernel_Version
+architecture=REPLACE_WITH_opkg_status_kernel_Architecture
+builder_schema=REPLACE_WITH_dw5934e-builder-v2
+verified_modemmanager_sha256=REPLACE_WITH_modemmanager_whole_ipk_sha256
+# One line per local .ipk, in the intended opkg order:
+# package|OPENWRT_PACKAGE_NAME|FILE_NAME.ipk|LOWERCASE_SHA256_OF_FILE
+# Include every direct dependency instead of relying on a remote feed.
+package|kmod-mhi-bus|kmod-mhi-bus_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|kmod-mhi-pci-generic|kmod-mhi-pci-generic_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|kmod-wwan|kmod-wwan_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|kmod-mhi-wwan-ctrl|kmod-mhi-wwan-ctrl_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|kmod-mhi-wwan-mbim|kmod-mhi-wwan-mbim_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|libmbim|libmbim_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|mbim-utils|mbim-utils_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|libqmi|libqmi_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|qmi-utils|qmi-utils_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|modemmanager|modemmanager_REPLACE.ipk|REPLACE_WITH_64_HEX
+package|dw5934e-autonet|dw5934e-autonet_REPLACE.ipk|REPLACE_WITH_64_HEX

@@ -1,0 +1,82 @@
+#!/bin/bash
+# SPDX-License-Identifier: BSD-3-Clause
+
+set -e
+
+SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --builddir)
+            builddir="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "${builddir}" ]]; then
+    echo "Error: --builddir is required." >&2
+    exit 1
+fi
+
+DATA_SRC=${SCRIPT_PATH}/data
+FLAT_BUILD=${builddir}/tests/data-vip
+
+# Generate test fixtures in the build directory
+${DATA_SRC}/generate_flat_build.sh "${FLAT_BUILD}"
+
+cleanup() {
+	rm -rf "${FLAT_BUILD}"
+}
+trap cleanup EXIT
+
+QDL_PATH=$builddir
+VIP_PATH=${FLAT_BUILD}/vip
+EXPECTED_DIGEST="3ca3c745c7bf60d9f51626ad819dce1e14788bc094c258da6656b0a469afbf15"
+VIP_TABLE_FILE=${VIP_PATH}/DigestsToSign.bin
+
+uname_out="$(uname -s)"
+case "${uname_out}" in
+    Linux*|Darwin*)
+        QDL=qdl
+        ;;
+    CYGWIN*|MINGW*|MSYS*)
+        QDL=qdl.exe
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+mkdir -p $VIP_PATH
+
+cd $FLAT_BUILD
+${QDL_PATH}/${QDL} --dry-run --create-digests=${VIP_PATH} \
+        prog_firehose_ddr.elf rawprogram*.xml patch*.xml
+
+if command -v sha256sum >/dev/null 2>&1; then
+    shacmd="sha256sum"
+elif command -v shasum >/dev/null 2>&1; then
+    shacmd="shasum -a 256"
+else
+    echo "No SHA-256 checksum tool found (need 'sha256sum' or 'shasum')"
+    exit 1
+fi
+
+actual_digest=`${shacmd} "${VIP_TABLE_FILE}" | cut -d ' ' -f1`
+if [ "$actual_digest" != "${EXPECTED_DIGEST}" ]; then
+	echo "Expected SHA256 digest of ${VIP_TABLE_FILE} file is ${EXPECTED_DIGEST}"
+	echo "Calculated SHA256 digest of ${VIP_TABLE_FILE} file is $actual_digest"
+	echo "VIP table folder contents:"
+	ls -la ${VIP_PATH}
+	exit 1
+fi
+
+echo "VIP tables are generated successfully and validated"
+
+rm -r ${VIP_PATH}/*.bin
+rmdir ${VIP_PATH}

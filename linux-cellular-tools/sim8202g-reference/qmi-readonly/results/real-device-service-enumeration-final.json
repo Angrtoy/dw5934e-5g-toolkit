@@ -1,0 +1,30 @@
+﻿{
+    "tool":  "sim8202g_qmi_readonly",
+    "timestamp_utc":  "2026-08-29T03:10:53.1994404Z",
+    "target_interface_guid":  "A12BAE2C-C01D-4BE8-8E30-6DFA1B814AC9",
+    "safety_boundary":  [
+                            "public Windows Mobile Broadband/MBN read-only enumeration only",
+                            "no device-service command/data session is opened",
+                            "no QMI/MBIM/PDC/AT/IOCTL wire command is sent",
+                            "no dial, answer, end-call, packet connect/disconnect, scan, preference, IMS bind/set, or persistent write"
+                        ],
+    "public_network_adapter_guid":  "A12BAE2C-C01D-4BE8-8E30-6DFA1B814AC9",
+    "network_registration_state":  "Deregistered",
+    "target_wwan_connectivity_levels":  [
+                                            "None"
+                                        ],
+    "wwan_connection_state":  "not_connected",
+    "emergency_call_mode":  false,
+    "mbn_connection_enumeration_hresult":  "0x80070490",
+    "mbn_target_connection_states":  [
+
+                                     ],
+    "voice_call_preflight":  "no MBN connection object; public WinRT state confirms target WWAN disconnected",
+    "network_device_status":  "DeviceReady",
+    "device_services":  [
+
+                        ],
+    "device_service_count":  0,
+    "outcome":  "blocked",
+    "block_reason":  "Windows exposes zero Mobile Broadband Device Services for the default modem. The public API does not provide a generic raw-QMI channel, so no QMI client/session or wire request was created."
+}

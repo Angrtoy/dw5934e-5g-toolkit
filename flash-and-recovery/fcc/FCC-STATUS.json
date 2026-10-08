@@ -1,0 +1,75 @@
+{
+  "status": "FCC materials are not a one-click deployment",
+  "historical_evidence": "E11D Ubuntu cold boot + 5G registration evidence was reviewed as de-identified summary; no new hardware action performed for this package",
+  "current_boundary": "ddc v2/v2-retry/v3 has no successful Ubuntu transaction",
+  "files": [
+    {
+      "path": "fcc/reference-unverified-host-deploy/deploy_factory_persistence_20260828.py",
+      "origin": "local reference source; private absolute paths redacted in delivered copy",
+      "status": "REFERENCE-UNVERIFIED-DO-NOT-EXECUTE",
+      "original_sha256": "34cb61f63f107a3ca418ffe979abdf9d5782e0d8b65f47e9e895a74b19e9e6ac",
+      "delivered_sha256": "13d57e0ebcbf23405faedd39e4be88b3571772515de7bb9c63d34f2a97d142d9",
+      "size": 13974
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/deploy_module_internal_fcc_bypass_20260826.py",
+      "origin": "local reference source; private absolute paths redacted in delivered copy",
+      "status": "REFERENCE-UNVERIFIED-DO-NOT-EXECUTE",
+      "original_sha256": "c636ddda59a031501429219d8fb79b7023f0b502a7e368e80f5fbc8108affd92",
+      "delivered_sha256": "b69fd6921fcf3d717b9387cfb3297525c6a08497d5d33c69dbe53869e12f3f8d",
+      "size": 11263
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/guarded_current_module_dms_online_once_20260826.py",
+      "origin": "local reference source; private absolute paths redacted in delivered copy",
+      "status": "REFERENCE-UNVERIFIED-DO-NOT-EXECUTE",
+      "original_sha256": "5067912e1da01b39b0f49f6eefb80b7529d8582812b096aaa82e477fbef52b9c",
+      "delivered_sha256": "00da4dd1376d2c02bfeaeb84d42b53e8ca6c90c3325c2788e8f53ae2c2ab8425",
+      "size": 7906
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/guarded_prepare_native_mhi_coldboot_20260826.sh",
+      "origin": "local reference source; private absolute paths redacted in delivered copy",
+      "status": "REFERENCE-UNVERIFIED-DO-NOT-EXECUTE",
+      "original_sha256": "d390301ce454d7266e68aabc1b13cb13da593dc5dda6436fff6763eb20df0480",
+      "delivered_sha256": "6daa376629adb553dfc166bc0cd641d590d6b76d359090ee7434e93168fe5eb0",
+      "size": 10728
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/remote_mhi_adb_exec_resync.py",
+      "origin": "local reference source; private absolute paths redacted in delivered copy",
+      "status": "REFERENCE-UNVERIFIED-DO-NOT-EXECUTE",
+      "original_sha256": "3ececa814fd31adbf39cc1ceb7a5773503a75acf219a499deac07c2080401a0d",
+      "delivered_sha256": "423ca582ad2cef1b34fc0604d1c7317a3c667864635a65dbc01084ee1a55643c",
+      "size": 5097
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/dw5934e_dms_online_once_shuttingdown_60a8592b",
+      "origin": "local historical E11D factory-sample artifact",
+      "status": "HISTORICAL-E11D-ARTIFACT; not a universal installer",
+      "sha256": "60a8592b6310b03230c45f205ee901add65b16591d16a20001763d120174cc61",
+      "size": 3928
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/dw_dms.init",
+      "origin": "local historical E11D factory-sample artifact",
+      "status": "HISTORICAL-E11D-ARTIFACT; not a universal installer",
+      "sha256": "1a714f4de08a808f0f63030e9a2cae2c86183038235c4f7c03b2d91f9a0ed988",
+      "size": 1545
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/dw_dms_ctl",
+      "origin": "local historical E11D factory-sample artifact",
+      "status": "HISTORICAL-E11D-ARTIFACT; not a universal installer",
+      "sha256": "b059e447fe8013e8a4da31cbdba02ceb9172bd821e3aa3766f7d9798d599f6bc",
+      "size": 3573
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/fcc_bypass.init",
+      "origin": "local historical E11D factory-sample artifact",
+      "status": "HISTORICAL-E11D-ARTIFACT; not a universal installer",
+      "sha256": "55cfd63c2778fb12a00a864e208569bd484d1904e357cb721bfd18760d32f86b",
+      "size": 1358
+    }
+  ]
+}

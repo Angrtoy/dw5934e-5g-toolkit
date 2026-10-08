@@ -1,0 +1,13 @@
+[Unit]
+Description=Install signed DW5934E AP047 from a native cold boot
+After=systemd-modules-load.service
+Wants=systemd-modules-load.service
+ConditionPathExists=/usr/local/sbin/dw5934e-ap047-phase-b
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/dw5934e-ap047-phase-b
+TimeoutStartSec=infinity
+
+[Install]
+WantedBy=multi-user.target

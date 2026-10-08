@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN" "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <vendor>DW5934e voice-control GUI</vendor>
+  <vendor_url>https://example.invalid/dw5934e</vendor_url>
+  <action id="org.example.dw5934e.voice-control">
+    <description>Control DW5934e cellular calls</description>
+    <message>Authentication is required to control DW5934e cellular calls.</message>
+    <defaults>
+      <allow_any>auth_admin</allow_any><allow_inactive>auth_admin</allow_inactive><allow_active>auth_admin</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/local/libexec/dw5934e-voice-control</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+</policyconfig>

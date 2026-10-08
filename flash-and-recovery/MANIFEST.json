@@ -1,0 +1,1115 @@
+{
+  "package": "DW5934e_Ubuntu_AP070_Customer_Kit_20260829",
+  "qdl_tag": "v2.7.1",
+  "qdl_commit": "a248f28ecd54f66c660bbc3a88657d4c62f1445d",
+  "qdl_url": "https://github.com/linux-msm/qdl.git",
+  "obtained": "2026-08-29",
+  "files": [
+    {
+      "path": "docs/01-Ubuntu\u73af\u5883\u51c6\u5907.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 559,
+      "sha256": "ff83d927dba4f094e81f4834d690c8a7d2cc8129ccce54d9f3d40d52d3cfb330"
+    },
+    {
+      "path": "docs/02-EDL9008\u4e0eAP070\u5237\u673a.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 1124,
+      "sha256": "47d0db196aa0a3434a32819d486f0ee9cefe6adee169ec1ace9878edc55b8865"
+    },
+    {
+      "path": "docs/03-FCC\u5185\u90e8\u6301\u4e45\u5316.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 685,
+      "sha256": "c1c65c11b5df08ee8bc9f03554bb56591f97958287069d6c3e1657fa6ba2ac05"
+    },
+    {
+      "path": "docs/04-\u89e3\u9501\u540e\u8054\u7f51.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 1300,
+      "sha256": "bde4235d111d4025cbe5be11cbc2e3fa1ca217efb0387727013b8e8fc395dfeb"
+    },
+    {
+      "path": "docs/05-E11D-E118-\u72b6\u6001\u77e9\u9635\u4e0e\u505c\u6b62\u6761\u4ef6.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 496,
+      "sha256": "2bad2de00ea4c3cdebe3d08328d23b89340cd40ddf6b4705e2374ac15ebc6df3"
+    },
+    {
+      "path": "docs/06-\u6765\u6e90\u8bb8\u53ef\u8bc1\u4e0e\u9a8c\u8bc1\u8bc1\u636e.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 529,
+      "sha256": "e789a45c9fcb8d034698e056e1b4aec68c5302b92c7071af934f0545eeffd44a"
+    },
+    {
+      "path": "fcc/EVIDENCE-SUMMARY.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 325,
+      "sha256": "bbe550592f21f615069f86498538b76b4a77e2a7fc6a2669a3a4432b9f2fbd6d"
+    },
+    {
+      "path": "fcc/FCC-STATUS.json",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 3997,
+      "sha256": "28fc27b4d13ab56a31da28befc61740402fc5414a79c5b727b7b0cd0ac6abd04"
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/deploy_factory_persistence_20260828.py.reference.txt",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 13620,
+      "sha256": "6d09754d0565fa058a6b6d19f8a9f40e5861a4117b73430bdad796dac5861889"
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/deploy_module_internal_fcc_bypass_20260826.py.reference.txt",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 10967,
+      "sha256": "84dd08e5404c561a5feb5406ed28010b5afc5d5f97e0d7652224660436bcf0df"
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/guarded_current_module_dms_online_once_20260826.py.reference.txt",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 7701,
+      "sha256": "f96164a7ad8dab98e4e265d251d2284ac01c46dba11067978384dc6eceec512e"
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/guarded_prepare_native_mhi_coldboot_20260826.sh.reference.txt",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 10521,
+      "sha256": "adc0bd8f9d8dbaec2160ede020dd32028df5063d76e060caa79998650e1b51ad"
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/README.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 295,
+      "sha256": "64ea1bff0afcf20b2185368d4cf461e2a8f020ab575991bb77843b6bdeab6fb0"
+    },
+    {
+      "path": "fcc/reference-unverified-host-deploy/remote_mhi_adb_exec_resync.py.reference.txt",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 4969,
+      "sha256": "223525dc61a05276d36c55a45985d0b14928dfdb0cea320bd740eb5663bf540b"
+    },
+    {
+      "path": "fcc/tools/host-preflight.sh",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 132,
+      "sha256": "c040f2f9d5ec255035a05219ad185627ce9569ea10aff36130eda2a095790ec9"
+    },
+    {
+      "path": "fcc/tools/module-audit.sh",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 163,
+      "sha256": "ec1902c61895b65fe2f1a55553dc1df8d6f718c20762e2e3ff17d0136b4f97aa"
+    },
+    {
+      "path": "fcc/tools/module-uninstall.sh",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 255,
+      "sha256": "fb6637f5aa13638687b54e3f25ef2fc8f2c5f2d15507fe9b8929723fade524ea"
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/dw5934e_dms_online_once_shuttingdown_60a8592b",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 3928,
+      "sha256": "60a8592b6310b03230c45f205ee901add65b16591d16a20001763d120174cc61"
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/dw_dms.init",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 1545,
+      "sha256": "1a714f4de08a808f0f63030e9a2cae2c86183038235c4f7c03b2d91f9a0ed988"
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/dw_dms_ctl",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 3573,
+      "sha256": "b059e447fe8013e8a4da31cbdba02ceb9172bd821e3aa3766f7d9798d599f6bc"
+    },
+    {
+      "path": "fcc/verified-e11d-artifacts/fcc_bypass.init",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 1358,
+      "sha256": "55cfd63c2778fb12a00a864e208569bd484d1904e357cb721bfd18760d32f86b"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/abl.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 212792,
+      "sha256": "39d14c64f86fa6a2377662f8675fc54c21f1bad39771b5d892df2062ca84727e"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/aop.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 216700,
+      "sha256": "7ac358ad560928ff3d7193ff77d71f2e5f6db63011396338e67778c1d4626adb"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/aop_devcfg.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 21536,
+      "sha256": "fc1e8939235dd87df1c274b505b7f1329b7de5daed93a25d3ffd257b31ca17b5"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/boot.img",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 18401280,
+      "sha256": "de439ced65a9315dcfc9f1d37f41532044c5c48ec4ec2292d71814f73bb3478c"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/cmnlib64.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 633728,
+      "sha256": "7c23224503d40c6f0c26245acea982d2d980bd52a34f4e1032a9f104a16bd70f"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/cpucp.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 102060,
+      "sha256": "e55aea6ecbd74d981523a6d38663021655701c8d32464512cd46692d788b53c5"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/devcfg_low_ddr.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 45508,
+      "sha256": "e3010e63c28a9ec5781490c1cf14fceddba8cc3c1566420b5ce09ba76a39f5cc"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/foxusr.ubi",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 3932160,
+      "sha256": "29183ebe66e86bd6f03967e88967439f436e961bd82a8292e3cd273c1fc19bdf"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/fw_ipa_gsi_6.0_p.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 57948,
+      "sha256": "6b2ec5b5d9466b7a87e098e6a16ea5eca2a7c2244167491d177fa1c2fbb4ef9e"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/fwinfo.bin",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 4096,
+      "sha256": "9d880cdf27acb0f40538c24acbd545d203e7a3bee8088c7557eebbdc07abd9f5"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/hypvm.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 1346432,
+      "sha256": "77c92a148af694f30b6e70929857281e7f7e2bfecec4db43b18b1c925606864b"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/km41.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 340056,
+      "sha256": "6ea14bb33bcbff2a8c4f1808cece8b7faf3fd58ec81d0d4b175a3f8def42e923"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/multi_image.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 13240,
+      "sha256": "52e650448a2f4c4589c1ceac1049ca05738877abf5b2c882e7e4c99fbce11454"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/multi_image_qti.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 12088,
+      "sha256": "13ed335eca617abd4cd72b2a4e9acf6cecceb236348b541d500ce6a8610853fa"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/NON-HLOS.ubi",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 89128960,
+      "sha256": "4658be0c0a70072e8c71fbb413650a0691887159086592b972f37886fa474d9d"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/PACKAGE-DERIVED-NOT-OFFICIAL-qdl.xml",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 9459,
+      "sha256": "37e9ce27c7755b759c109a606798d473a682af0119743a1630d05fc128239dd3"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/PACKAGE-DERIVED-NOT-OFFICIAL-qdl.xml.DIFF.json",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 498,
+      "sha256": "a117c56c3695d456da4bdeda6c3556d0acca50eb699200ce3672f5ec051274af"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/partition_complete_p4K_b256K.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 16384,
+      "sha256": "9a40ca2834c5adca852497fd7961afa790d8936d2aa14b2191a54a232d9b1737"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/qupv3fw.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 56432,
+      "sha256": "c4eda39fa54d307484ec2464371ef7c17d2bb9c832d4190dac548810288130de"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/rawprogram_nand_p4K_b256K.xml",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 11326,
+      "sha256": "a45c48486f344959596f506983609aa24a062727707e57a088ecab4955fe91f9"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/recoveryinfo.bin",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 151552,
+      "sha256": "6ade703648ae2c0f0e75663fe765ca63283c683d09c7304e7fef38c5740885b4"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/shrm.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 52556,
+      "sha256": "f6b7555dc1725d8123600f7f3843b855dd62a9a0c16e490730a7026f74170f9b"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/sysfs.ubi",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 40108032,
+      "sha256": "8aadc98f1ff2b470612792d590e98149c263c5cbf5210ab65a5aece317376a9f"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/tz.mbn",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 1969504,
+      "sha256": "0ff7c80070c1b98fc5895c046a97d09affedb57382f1d9528f6b7aa9a5a2a446"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/uefi.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 2667448,
+      "sha256": "13444ce1d2047a1832c0de0b35dc3be83bcf664f6aafd90260649b5346bb8915"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/xbl_config.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 206688,
+      "sha256": "2a6aa890bfd71b2c368f572e36f6e6542f3ddd870617c7b4893f1937594d82ea"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/xbl_ramdump.elf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 738440,
+      "sha256": "22a0c67bcec46570f5c10856c5cce68c94ced59317262cb8fa68f1a7d9ef704d"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/xbl_s_devprg_ns.melf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 2020092,
+      "sha256": "4e06ea4801178f97e8ec8bdedcf4843c5b4afa0eea8a753637fe13d3e53e8515"
+    },
+    {
+      "path": "firmware/AP070-Recovery-R/xbl_s_nand.melf",
+      "origin": "firmware payload",
+      "status": "included",
+      "size": 1467432,
+      "sha256": "e951c1f2ba4f5a4cc8d709d92d83fa02956c6d196b568b86a6fc3b5824d30b67"
+    },
+    {
+      "path": "firmware/SOURCE-AND-RISK.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 290,
+      "sha256": "2d8e30c8b9962418431ccd8bfb772f6c8948e10d420b06f2c1562b8133d83369"
+    },
+    {
+      "path": "NOTICE",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 197,
+      "sha256": "ca1b48bff349ac1fe0cc19ad76977b055ccc1b3f5d92bb64a07eef7ea117abd6"
+    },
+    {
+      "path": "README.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 800,
+      "sha256": "7d1f4bc293c0ce12bcb50ff98669f136d4e12949080e47f9007cfe78abd51e8a"
+    },
+    {
+      "path": "references/OFFICIAL-SOURCES.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 818,
+      "sha256": "e2afc78865030af558951e09361fccec12985ca96a28a90faeac6e808162f44d"
+    },
+    {
+      "path": "START-HERE.md",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 1096,
+      "sha256": "bbf67aea261f29903cf3a4b6e13924c90e7470577fe2d08dbe4145aecabc899d"
+    },
+    {
+      "path": "tools/build-qdl-ubuntu.sh",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 1103,
+      "sha256": "03290acb667c067e80adfbef9a2ac156002f3d90d88d544c21a59a727126ac36"
+    },
+    {
+      "path": "tools/detect-edl.sh",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 568,
+      "sha256": "c646a17a22f657e5ffc0536dd2af8853706d349c2cce2057e107f97f92c28e1e"
+    },
+    {
+      "path": "tools/flash-ap070-usb9008.sh",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 3592,
+      "sha256": "3f8d24988e1b4508fa791c91651dbbcd3f128dabf73685421a36bb5cfc1cfd40"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.checkpatch.conf",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1065,
+      "sha256": "cff1f255f594fd9cdd08774e0f3054b9e89ab85dd6369be3cb8cf83e3f4eb370"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/config",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 236,
+      "sha256": "1b69b67fd282cb9ca147247ea0eb5ebed776ffb3e0a6068671d2a3fcc8c3de24"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/description",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 73,
+      "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/HEAD",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 41,
+      "sha256": "ea2215e810b004c41f9e6813faa47ef06cff3bfa6a7fa713a08a867fea2af158"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/applypatch-msg.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 478,
+      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/commit-msg.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1972,
+      "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/fsmonitor-watchman.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 4611,
+      "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/post-update.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 189,
+      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/pre-applypatch.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 424,
+      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/pre-commit.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1649,
+      "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/pre-merge-commit.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 416,
+      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/pre-push.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1374,
+      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/pre-rebase.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 4898,
+      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/pre-receive.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 544,
+      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/prepare-commit-msg.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1492,
+      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/push-to-checkout.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2783,
+      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/sendemail-validate.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2308,
+      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/hooks/update.sample",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3650,
+      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/index",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 6104,
+      "sha256": "07dac813b113e719419f6876cad33688470bc1197e2aa5c4d350f0ae4d70630b"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/info/exclude",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 240,
+      "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/logs/HEAD",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 187,
+      "sha256": "06d5ef6dbbb68e99cda06cc341d01cd43902c3bccdd2d4683046855a7aa81cff"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/objects/pack/pack-25c60dbb823da83818dc8eb4213daf3fa2982df4.idx",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3340,
+      "sha256": "dfd347d39246362d9024a3c9f84b4a799c27a161f7194f9e227ccf6d63a2fb8c"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/objects/pack/pack-25c60dbb823da83818dc8eb4213daf3fa2982df4.pack",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 135091,
+      "sha256": "17cd04cf9b1a317f90a001d168f898ffff752f16392a6a99a529278d273dd88d"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/objects/pack/pack-25c60dbb823da83818dc8eb4213daf3fa2982df4.rev",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 376,
+      "sha256": "ee3584854f546999e09ac6a5355ad3626ea53196003a4090c351d2da6abf174b"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/packed-refs",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 104,
+      "sha256": "bdf36610c38d47bc67a3e7a352cd598be47fa8b0710dbdd1019c122c67473130"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.git/shallow",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 41,
+      "sha256": "ea2215e810b004c41f9e6813faa47ef06cff3bfa6a7fa713a08a867fea2af158"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.github/workflows/build.yml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 5618,
+      "sha256": "cf591ff33da9b81527c991d8f33b6e8bc93c5d43c8400e91d79615b6fff97f57"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.github/workflows/checkpatch.yml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 502,
+      "sha256": "021022d0db0f3e61268b22b240313a8ed22f8ff3ea73c3bab67c55c252ce46b4"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.github/workflows/codeql.yml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 785,
+      "sha256": "805bf66dda7809c437098a0b37e48632bb5e371294ade017cc7e468fdfc1a719"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.github/workflows/commitlint.yml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 391,
+      "sha256": "63bbc5cbeb3ffa44279e11b89ccf86fe464d432a9014fdad618bc5868fa1ad37"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.github/workflows/markdown-lint.yml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 327,
+      "sha256": "eec260ce4363be66f18d3b0081f35603d1ae4aaa47ded07d47404e9d7063d684"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/.gitignore",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 180,
+      "sha256": "f9f53d7d9c1c55020ba46932daf88fa21812d329b15d979367c26e7f4692e52a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/auto.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3868,
+      "sha256": "eccdae51ca56bb39d43a3689938a785d63be575cddcac4c17410dce98fbb8233"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/commitlint.config.mjs",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1654,
+      "sha256": "26a5356c369a436fcac32cc292e33201eff8517c61d1b090401e15f9a67d151f"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/contents.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 25465,
+      "sha256": "6b265b22e8ad984995b7fc0b42c2fbebc374cf491f97c1da55be25e243650d7a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/contents.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 557,
+      "sha256": "2c207f7a41e2edad13b94fe0815af6f986be36db9ced76d1c16de98d98e7735c"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/file.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 4930,
+      "sha256": "ab82d2dcc337b9dad363880b412e9e2ed184d05ed699d2b6a035b7808d191323"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/file.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1075,
+      "sha256": "c56142f69db5a888218baaf5a92fb9ace953ef0ee84c81824cf1144715729ecd"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/firehose.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 42823,
+      "sha256": "1573f3c5d9a74b95a659b48bb6a60a26f63cccc0cebcf610c1639aede02ef008"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/firehose.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1446,
+      "sha256": "12a3e9343f169bb1b3534748ba090b349fbd90910a96b669628543b7e1860e28"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/flashmap.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 11024,
+      "sha256": "cd05b186354420680431d469e41b2b96fb5012c5e544fccc03889bc708fbbad3"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/flashmap.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 481,
+      "sha256": "ae4d0980a75b22a1681a255adf8d97038f748d76d9f37283628861d2ec09126a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/gpt.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 7745,
+      "sha256": "cbdb3fd0f0783db2d2655dffed45556b0980298d8abff7a7f58855da7cc12007"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/gpt.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 376,
+      "sha256": "2199e98cef3f067020a3720c65d19d60f3a7a8cda0004458eb451e58eee0df52"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/io.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3650,
+      "sha256": "82c3c2e16add6fd2243c29d036721bb164dc433ba9701eb483365f937fdf97cc"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/json.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 18648,
+      "sha256": "ae5f4843fd25e99545ce029261b6afadf3b8c5841395a6162ce13968c9f1e67c"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/json.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3056,
+      "sha256": "1d0f1f34db6802028bb12273a88af42627d1ce183f0b7267d92bcb2f25801fc6"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/ks.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3218,
+      "sha256": "d34efc00a948eaf0a76554306555a513424c166344edf8d99d8569b779e8de5f"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/LICENSE",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1659,
+      "sha256": "f30698ec39434a434fc8b4c8b4a239298b2b601f57107030c655fdc538cca24c"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/list.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2241,
+      "sha256": "e33b07d044d1330376f64f33d5eda79e5889ea4fcf4eb2337b7f21af12c38de0"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/meson.build",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 6921,
+      "sha256": "580164e33a7711985bccb6b474f17f973fae44f18c3ee9df84b04bc4a906f82f"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/meson.options",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 178,
+      "sha256": "b0079a6a9fe17421aee6c7d696a10558f626415fc74ac43bf1ea607aeb68d73e"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/oscompat.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1436,
+      "sha256": "a0c10b2934058556953473689f66701ea008387c5fadbc54a2874e023a1c9242"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/oscompat.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1064,
+      "sha256": "92a1f5a441d289ec8c059e1879e75e81a02c5aeef066fd10d2999c9a0b72ad4a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/patch.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2148,
+      "sha256": "42c5b661b7d4e7c603dbb2f2eb07ac431d5de58e8fc5ad5e8cab1b995cc4ee1a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/patch.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 336,
+      "sha256": "183f8533562af521cb9e172108ff1a4fa7b464249557f0664e2a1c7fe625ad52"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/pathbuf.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3604,
+      "sha256": "a976ed0a1811d607c019879795c49ca386f177d37875f52527b1abc53c3513e1"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/pathbuf.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 658,
+      "sha256": "452bbd2eacf67d2709d2a1fea909bfb1e2df9b325b59f569017f8c9f4da78568"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/program.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 14332,
+      "sha256": "b96273f3cfed15263330ce349687a7b89ea25b0c3f537375c4530f3adc96ad1d"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/program.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1112,
+      "sha256": "cde3283d39e41fcde2e000ba74c73e1101602ed1e29735afb8a1b80df4d48aba"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/qdl.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 31476,
+      "sha256": "b5d7ea2eb1c4d870813ac22982d9870e1552f06964362ef2205b46ea5529e608"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/qdl.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 6687,
+      "sha256": "956290947cf64e9e8731cb33ebde97c0f6b94b3f6cae5f3162fbf8a9e98b7753"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/qud.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 15207,
+      "sha256": "24c5c13af1fa6d93e43b5dae4b617670166c1db81ac83950297e4e967f940c5c"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/ramdump.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2095,
+      "sha256": "af94c30eafee46689fc2deeea1ccff44fe5cc4595dec44a3c56787112c46604a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/read.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3635,
+      "sha256": "d4a5cdac3e7112ed9f7f1ac204299f3bdddb6de733e7583bd5a8d3d2a7e15bd4"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/read.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 423,
+      "sha256": "3e49a04ca133252f867cc52f12be5a28ebbe0b086b08102f3ab0cb0cb88b0c2f"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/README.md",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 15366,
+      "sha256": "4d0f02ec1cbd15e2344266b0112f5011f034cdddbded64b20b1d507b4b19de34"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/sahara.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 24464,
+      "sha256": "86532ee35be9fc015d9e4cca2dfab9a421c807df08a91abbf2a53a965dd5003a"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/scripts/checkpatch_wrapper.sh",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2604,
+      "sha256": "0defd5ee09d73fb8ff587b71d3fa164bb44d173168553bfee674a204adf9ac85"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/scripts/markdownlint_wrapper.sh",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 665,
+      "sha256": "82880fdfd7ce0cc30106f49ad2574f07a3e1737e9a5a2cda509f6ec1ab5f54c8"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/sha2.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 13029,
+      "sha256": "06c9f14d4ac54fd8468cd00ead484954853f017831eec47a5dc8b00672089a62"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/sha2.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1169,
+      "sha256": "94be6ad05d2fda6c94cd63379147e88e265b5b42f1461cdf28bd741d884aca08"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/sim.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 21332,
+      "sha256": "ef5a2db937c3dbb54a42bc80a2d599163a18ee9d531d3b5d63185f271156214f"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/sim.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 438,
+      "sha256": "058f8cf018f01cb98286bd754e0a188093878fe1611c2757bddb51753966cf72"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/sparse.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 3315,
+      "sha256": "c7c932fa3b2c500c8df8d801a9bd2889897fcef504d3ac098ebdb2f72c1728e8"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/sparse.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2235,
+      "sha256": "8ed8822f8925d942e4a00e0148fe9c896e2d4b38235048097b3629898d437f61"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/common.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 698,
+      "sha256": "8ccc02562a714657aa1a4fab5ae859b1e6f47750509895a918832bd29ef14c91"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/common.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 205,
+      "sha256": "e824f935f7fdc9a2d1c2fdd57697329ef928b279b90f6daebacfb467c369fc03"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/data/flashmap.json",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 561,
+      "sha256": "b96cfd69600c33fd2d19f74b4ccb63d56d7a3096daf6a7351ddc29d2cd0e1868"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/data/generate_flat_build.sh",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1469,
+      "sha256": "9f61bc16ab080f44053fd4665e5af0815f55307b4f1aaeaf56b7438f366a41b9"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/data/patch0.xml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 6279,
+      "sha256": "6335495268852aee8b50554ba6c28790cac967e369c4086273e4b4b685089972"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/data/patch1.xml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 6295,
+      "sha256": "540fe07b7044a42ad0de7c4d409026e426bac86d18a84d6ab7c4d3e4ce2628f4"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/data/rawprogram0.xml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1311,
+      "sha256": "8482236131848583635cb518ab0d1323ac994747b6376a86e9f2565439630a27"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/data/rawprogram1.xml",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 2168,
+      "sha256": "e414c498887412d35cb239b5064319eb45f3e5c59e5fa41e727f07aefa1b6db1"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/test_contents_selectors.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 11384,
+      "sha256": "db1dc4ffe889ba4cf97c13cba9f5b4b8cae51d40b63fe6cdbff87477c6ebc61f"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/test_contents_xml.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 16355,
+      "sha256": "51db29405257a71e39bd0afdcca99c5d12dff6d5166841aefc0770bae27ea91d"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/test_flashmap.sh",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1396,
+      "sha256": "0891c99cc2d9bfa6c44f9cc6a7de1ca5671865c668531fc98cb60eb80677f898"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/test_pathbuf.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 5063,
+      "sha256": "998494881d34c660742b61b1bd7b08c1e3335372a3cf72ab5e07f6314f35e3fc"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/test_program_load_xml.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 10368,
+      "sha256": "04a3195c825224d060600d9f358c276820114f8b110d3c9eee705b7d7b452b29"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/tests/test_vip_generation.sh",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1867,
+      "sha256": "312d43198af98277b4cd6c53e6255d059754ce9c414dd4beb3e35f9fbf6101ec"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/ufs.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 8453,
+      "sha256": "3683863a8688af505b741772fa0374a9e4a05ce4a822ff77d12c2a2c150c6c78"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/ufs.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1547,
+      "sha256": "06fefa1b8b480c21ad11b16d7b30e6f1ea2b37081c071797c81c561c9ee261d7"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/usb.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 13549,
+      "sha256": "972d42ec69a82e78cf24e4709ba5aebf30613ead8246d333bed866172734c2bf"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/util.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 6325,
+      "sha256": "1f3ffbc65f387b0af52253e943d85ce2ff14fab4a6c6ff2054b29b743a4a01bf"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/ux.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 4715,
+      "sha256": "6443b5ef1a3c161611bc445c49659005546ee276edefb0c7f7877ca42441e8dd"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/version.h.in",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 29,
+      "sha256": "1cad3b27f24dcd26134c07e7f384c9c1f7df3848bbf43f11208fd4beb86894f9"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/vip.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 13023,
+      "sha256": "3827eb2a2695d347330c043e0ff4e00ea30b6279fc7f509d12c8df219e34cbd8"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/vip.h",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 1990,
+      "sha256": "2c1927b2533638e2c8a201a0c25fd8cd21080db5ee70120a492e2d5e7ed525bd"
+    },
+    {
+      "path": "tools/qdl-v2.7.1/zipper.c",
+      "origin": "vendored qdl",
+      "status": "included",
+      "size": 27382,
+      "sha256": "ec52b8fe8b724efad90ca46f4886800a7cbce1e9d20318498ba4e24891f56b79"
+    },
+    {
+      "path": "tools/verify-bundle.sh",
+      "origin": "package authored/local historical artifact",
+      "status": "included",
+      "size": 1891,
+      "sha256": "1191f1ba487b1c7bded2c2673361917f476699d81894662abe705c433d9d3712"
+    }
+  ]
+}

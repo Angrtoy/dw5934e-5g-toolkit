@@ -1,0 +1,20 @@
+[
+  {
+    "name": "39b2924e6c51cdf959f628cc1b0e8c5b.png",
+    "bytes": 229894,
+    "sha256": "e05abd0b5973e463d1889c5a513b94a0048fbf2ee6f7597d815bc804286a8a13",
+    "zip_crc32": "62cd57ec"
+  },
+  {
+    "name": "3D_PCB1_7_2026-07-29.step",
+    "bytes": 56927152,
+    "sha256": "220bd3ca222bb8c0ba9a6175bf033b1412f4a174d5e1e4d2b1bb3262097485b3",
+    "zip_crc32": "81b1dc28"
+  },
+  {
+    "name": "DUMMY-Raspberry+Pi+5-Ative+Cooler.3mf",
+    "bytes": 1472749,
+    "sha256": "f4055484d5473f5f15ef8240684f7a265d9bcad28b19987cc9c3edc50273e547",
+    "zip_crc32": "1b39a09e"
+  }
+]

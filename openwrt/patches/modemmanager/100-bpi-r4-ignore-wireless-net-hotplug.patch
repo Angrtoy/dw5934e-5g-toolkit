@@ -1,0 +1,20 @@
+--- a/net/modemmanager/files/etc/hotplug.d/net/25-modemmanager-net
++++ b/net/modemmanager/files/etc/hotplug.d/net/25-modemmanager-net
+@@ -1,7 +1,17 @@
+ #!/bin/sh
+ 
+ [ "$ACTION" = add ] || exit 0
+ 
++# dw5934e-autonet: skip wireless interfaces
++# BPI-R4 MT7996 creates phy*-ap* net events.  They are not modem netdevs and
++# forwarding them to ModemManager can repeatedly reload Wi-Fi.  This is a
++# deliberately narrow build-time patch to the stock packages hotplug handler.
++[ -n "$INTERFACE" ] || exit 0
++if [ -e "/sys/class/net/$INTERFACE/wireless" ] || \
++   [ -e "/sys/class/net/$INTERFACE/phy80211" ]; then
++	exit 0
++fi
++
+ [ -n "$DEVPATH" ] || exit 0
+ 
+ mmcli --report-kernel-event="action=$ACTION,subsystem=net,name=$INTERFACE"

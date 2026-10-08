@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=DW5934e Dialer (control only)
+Comment=Control-only cellular call UI; no host call audio
+Exec=/usr/local/lib/dw5934e-voice-gui/dw5934e_voice_gui.py
+Terminal=false
+Categories=Network;Telephony;
+Keywords=phone;dialer;cellular;DW5934e;

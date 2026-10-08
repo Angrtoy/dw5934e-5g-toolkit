@@ -1,0 +1,220 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include <stdarg.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <sys/ioctl.h>
+#endif
+#include <sys/time.h>
+#include <unistd.h>
+
+#include <libxml/xmlerror.h>
+#include <libxml/xmlversion.h>
+
+#include "qdl.h"
+
+/* libxml2 2.12 const-qualified the xmlError pointer in this callback. */
+#if LIBXML_VERSION >= 21200
+typedef const xmlError * ux_xml_error_ptr;
+#else
+typedef xmlErrorPtr ux_xml_error_ptr;
+#endif
+
+#define UX_PROGRESS_REFRESH_RATE	10
+#define UX_PROGRESS_SIZE_MAX		80
+
+#define HASHES "################################################################################"
+#define DASHES "--------------------------------------------------------------------------------"
+
+static const char * const progress_hashes = HASHES;
+static const char * const progress_dashes = DASHES;
+
+static unsigned int ux_width;
+static unsigned int ux_cur_line_length;
+
+/*
+ * Levels of output:
+ *
+ * error: used to signal errors to the user
+ * info: used to inform the user about progress
+ * logs: log prints from the device
+ * debug: protocol logs
+ */
+
+/* Clear ux_cur_line_length characters of the progress bar from the screen */
+static void ux_clear_line(void)
+{
+	if (!ux_cur_line_length)
+		return;
+
+	printf("%*s\r", ux_cur_line_length, "");
+	fflush(stdout);
+	ux_cur_line_length = 0;
+}
+
+/*
+ * libxml2 emits parser diagnostics directly to stderr by default. Route them
+ * through ux_err() so the file:line context is preserved while keeping output
+ * consistent with the rest of the tool.
+ */
+static void ux_xml_error_handler(void *ctx __unused, ux_xml_error_ptr error)
+{
+	const char *level;
+
+	if (!error || error->level == XML_ERR_NONE)
+		return;
+
+	switch (error->level) {
+	case XML_ERR_WARNING:
+		level = "warning";
+		break;
+	case XML_ERR_ERROR:
+		level = "error";
+		break;
+	case XML_ERR_FATAL:
+	default:
+		level = "fatal";
+		break;
+	}
+
+	if (error->file)
+		ux_err("libxml2 %s: %s:%d: %s",
+		       level, error->file, error->line, error->message);
+	else
+		ux_err("libxml2 %s: %s", level, error->message);
+}
+
+#ifdef _WIN32
+
+void ux_init(void)
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	int columns;
+
+	HANDLE stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	if (GetConsoleScreenBufferInfo(stdoutHandle, &csbi)) {
+		columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+		ux_width = MIN(columns, UX_PROGRESS_SIZE_MAX);
+	}
+
+	xmlSetStructuredErrorFunc(NULL, ux_xml_error_handler);
+}
+
+#else
+
+void ux_init(void)
+{
+	struct winsize w;
+	int ret;
+
+	ret = ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	if (!ret)
+		ux_width = MIN(w.ws_col, UX_PROGRESS_SIZE_MAX);
+
+	xmlSetStructuredErrorFunc(NULL, ux_xml_error_handler);
+}
+
+#endif
+
+void ux_err(const char *fmt, ...)
+{
+	va_list ap;
+
+	ux_clear_line();
+
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+	fflush(stderr);
+}
+
+void ux_info(const char *fmt, ...)
+{
+	va_list ap;
+
+	ux_clear_line();
+
+	va_start(ap, fmt);
+	vprintf(fmt, ap);
+	va_end(ap);
+	fflush(stdout);
+}
+
+void ux_log(const char *fmt, ...)
+{
+	va_list ap;
+
+	if (!qdl_debug)
+		return;
+
+	ux_clear_line();
+
+	va_start(ap, fmt);
+	vprintf(fmt, ap);
+	va_end(ap);
+	fflush(stdout);
+}
+
+void ux_debug(const char *fmt, ...)
+{
+	va_list ap;
+
+	if (!qdl_debug)
+		return;
+
+	ux_clear_line();
+
+	va_start(ap, fmt);
+	vprintf(fmt, ap);
+	va_end(ap);
+	fflush(stdout);
+}
+
+void ux_progress(const char *fmt, unsigned int value, unsigned int max, ...)
+{
+	static struct timeval last_progress_update;
+	unsigned long elapsed_us;
+	unsigned int bar_length;
+	unsigned int bars;
+	unsigned int dashes;
+	struct timeval now;
+	char task_name[32];
+	float percent;
+	va_list ap;
+
+	/* Don't print progress is window is too narrow, or if stdout is redirected */
+	if (ux_width < 30)
+		return;
+
+	/* Avoid updating the console more than UX_PROGRESS_REFRESH_RATE per second */
+	if (last_progress_update.tv_sec) {
+		gettimeofday(&now, NULL);
+		elapsed_us = (now.tv_sec - last_progress_update.tv_sec) * 1000000 +
+			     (now.tv_usec - last_progress_update.tv_usec);
+
+		if (elapsed_us < (1000000 / UX_PROGRESS_REFRESH_RATE))
+			return;
+	}
+
+	if (value > max)
+		value = max;
+
+	va_start(ap, max);
+	vsnprintf(task_name, sizeof(task_name), fmt, ap);
+	va_end(ap);
+
+	bar_length = ux_width - (20 + 4 + 6);
+	percent = (float)value / max;
+	bars = percent * bar_length;
+	dashes = bar_length - bars;
+
+	printf("%-20.20s [%.*s%.*s] %1.2f%%%n\r", task_name,
+	       bars, progress_hashes,
+	       dashes, progress_dashes,
+	       percent * 100,
+	       &ux_cur_line_length);
+	fflush(stdout);
+
+	gettimeofday(&last_progress_update, NULL);
+}

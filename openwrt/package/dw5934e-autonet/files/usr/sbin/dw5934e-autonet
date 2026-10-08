@@ -1,0 +1,328 @@
+#!/bin/sh
+# DW5934e AutoNet: conservative ModemManager/netifd orchestration.
+# No AT, sysfs writes, PCI override/manual driver attach, reset, or network download occurs here.
+
+NAME='dw5934e-autonet'
+CONFIG='dw5934e-autonet'
+STATE_DIR='/var/run/dw5934e-autonet'
+STATE_FILE="$STATE_DIR/state"
+PCI_VENDOR='0x105b'
+PCI_DEVICE_ESIM='0xe11d'
+PCI_DEVICE_NON_ESIM='0xe11e'
+
+log() { logger -t "$NAME" -- "$*"; }
+
+state_set() {
+	mkdir -p "$STATE_DIR" 2>/dev/null || return 0
+	{
+		echo "state=$1"
+		echo "detail=$2"
+		echo "updated=$(date +%s 2>/dev/null || echo 0)"
+	} > "$STATE_FILE"
+	log "state=$1 detail=$2"
+}
+
+cfg_get() { uci -q get "$CONFIG.main.$1" 2>/dev/null; }
+
+valid_section_name() {
+	case "$1" in
+		''|*[!A-Za-z0-9_\-]*) return 1 ;;
+		*) return 0 ;;
+	esac
+}
+
+find_dw_bdf() {
+	local d vendor device
+	for d in /sys/bus/pci/devices/*; do
+		[ -r "$d/vendor" ] && [ -r "$d/device" ] || continue
+		vendor="$(cat "$d/vendor" 2>/dev/null)"
+		device="$(cat "$d/device" 2>/dev/null)"
+		if [ "$vendor" = "$PCI_VENDOR" ] && { [ "$device" = "$PCI_DEVICE_ESIM" ] || [ "$device" = "$PCI_DEVICE_NON_ESIM" ]; }; then
+			basename "$d"
+			return 0
+		fi
+	done
+	return 1
+}
+
+load_matching_modules() {
+	# modprobe loads only modules advertised by the running kernel; it never
+	# supplies an ID or manually binds a PCI device. Built-in drivers need none.
+	command -v modprobe >/dev/null 2>&1 || return 0
+	modprobe mhi_pci_generic 2>/dev/null || true
+	modprobe wwan 2>/dev/null || true
+	modprobe mhi_wwan_ctrl 2>/dev/null || true
+	modprobe mhi_wwan_mbim 2>/dev/null || true
+}
+
+pci_driver_for() {
+	readlink -f "/sys/bus/pci/devices/$1/driver" 2>/dev/null || true
+}
+
+have_mbim_node() {
+	local n
+	for n in /dev/wwan*mbim*; do
+		[ -e "$n" ] && return 0
+	done
+	return 1
+}
+
+report_existing_target_wwan() {
+	# Built-in drivers may have created netdevs before MM started.  Report only
+	# a netdev whose resolved device path belongs to this exact PCI endpoint;
+	# never synthesize events for Wi-Fi, virtual devices, or another modem.
+	local bdf="$1" n path reported=0 ifname
+	[ -e "$STATE_DIR/target-coldplug-reported" ] && return 0
+	mmcli --help-all 2>/dev/null | grep -q -- '--report-kernel-event' || return 0
+	for n in /sys/class/net/*; do
+		[ -e "$n" ] || continue
+		path="$(readlink -f "$n/device" 2>/dev/null)"
+		case "$path" in /sys/*"$bdf"*) ;; *) continue;; esac
+		ifname="$(basename "$n")"
+		mmcli --report-kernel-event="action=add,subsystem=net,name=$ifname" >/dev/null 2>&1 || true
+		reported=1
+	done
+	[ "$reported" = 1 ] && echo 1 > "$STATE_DIR/target-coldplug-reported"
+}
+
+modem_paths() {
+	mmcli -L 2>/dev/null | sed -n 's#.*\(/org/freedesktop/ModemManager1/Modem/[0-9][0-9]*\).*#\1#p'
+}
+
+key_from_facts() {
+	# ModemManager 1.24's -K formatter pads the key left of ':'.  Never split on
+	# a literal ": ": both the padding and value spacing are formatter details.
+	# $1 is key/value text, $2 is the exact dotted key.
+	printf '%s\n' "$1" | awk -v wanted="$2" '
+	{
+		line=$0; sub(/^[[:space:]]*/, "", line)
+		colon=index(line, ":"); if (!colon) next
+		key=substr(line, 1, colon - 1); value=substr(line, colon + 1)
+		sub(/^[[:space:]]*/, "", value); sub(/[[:space:]]*$/, "", value)
+		if (key == wanted) { print value; exit }
+	}'
+}
+
+modem_facts() { mmcli -m "$1" -K 2>/dev/null; }
+key_value() { key_from_facts "$(modem_facts "$1")" "$2"; }
+
+find_dw_modem() {
+	local bdf="$1" modem sysdev physdev facts
+	for modem in $(modem_paths); do
+		facts="$(modem_facts "$modem")"
+		sysdev="$(key_from_facts "$facts" 'modem.generic.device')"
+		physdev="$(key_from_facts "$facts" 'modem.generic.physdev')"
+		case "$sysdev" in /sys/*"$bdf"*) ;; *) continue;; esac
+		case "$physdev" in /sys/*"$bdf"*) ;; *) continue;; esac
+		printf '%s|%s\n' "$modem" "$sysdev"; return 0
+	done
+	return 1
+}
+
+slot_value() {
+	# MM 1.24 serializes arrays as .length and .value[N], where the value is
+	# "slot N: /" for a conclusively empty slot.  Do not parse human table output.
+	local facts="$1" slot="$2" record
+	record="$(key_from_facts "$facts" "modem.generic.sim-slots.value[$((slot - 1))]")"
+	printf '%s\n' "$record" | sed -n "s/^slot[[:space:]]*$slot[[:space:]]*:[[:space:]]*//p"
+}
+
+slot_is_absent() {
+	case "$1" in /|'(null)'|'none'|'no SIM'|'no sim') return 0;; *) return 1;; esac
+}
+
+slot_is_present() {
+	case "$1" in /org/freedesktop/ModemManager1/SIM/*|*/SIM/[0-9]*) return 0;; *) return 1;; esac
+}
+
+attempt_sim_slot_switch() {
+	# A slot selection changes modem state, so all ambiguity is a no-op.  A marker
+	# makes this at most one switch attempt in a boot, including procd restarts.
+	local modem="$1" facts length primary active candidate='' found=0 n v
+	[ "$(cfg_get auto_sim_slot)" = '1' ] || return 1
+	[ -e "$STATE_DIR/sim-slot-attempted" ] && return 1
+	mmcli --help-all 2>/dev/null | grep -q -- '--set-primary-sim-slot' || return 1
+	facts="$(modem_facts "$modem")"
+	length="$(key_from_facts "$facts" 'modem.generic.sim-slots.length')"
+	primary="$(key_from_facts "$facts" 'modem.generic.primary-sim-slot')"
+	case "$length" in [1-8]) ;; *) return 1;; esac
+	case "$primary" in [1-9]|[1-9][0-9]) ;; *) return 1;; esac
+	[ "$primary" -le "$length" ] 2>/dev/null || return 1
+	active="$(slot_value "$facts" "$primary")"
+	slot_is_absent "$active" || return 1
+	n=1
+	while [ "$n" -le "$length" ]; do
+		v="$(slot_value "$facts" "$n")"
+		[ -n "$v" ] || return 1
+		found=$((found + 1))
+		if [ "$n" != "$primary" ] && slot_is_present "$v"; then
+			[ -z "$candidate" ] || return 1
+			candidate="$n"
+		elif [ "$n" != "$primary" ] && ! slot_is_absent "$v"; then
+			return 1
+		fi
+		n=$((n + 1))
+	done
+	# "found" must contain primary plus an explicitly reported other slot.
+	[ "$found" -ge 2 ] && [ -n "$candidate" ] || return 1
+	echo 1 > "$STATE_DIR/sim-slot-attempted"
+	if mmcli -m "$modem" "--set-primary-sim-slot=$candidate" >/dev/null 2>&1; then
+		state_set 'sim-slot-switched' "from-$primary-to-$candidate"
+	else
+		state_set 'sim-slot-switch-failed' "from-$primary-to-$candidate"
+	fi
+	return 0
+}
+
+fcc_method_unverified() {
+	# libqmi requires a vendor-specific [magic-string,magic-number] parameter.
+	# No official open source material confirms the DW5934e/X72 value, so this
+	# delivery must not guess or invoke the FOX command.
+	modem_facts "$1" | grep -Eiq '(fcc[[:space:]_-]*(authentication|auth|lock)|radio[[:space:]_-]*lock|failed.*fcc)'
+}
+
+network_set_if_changed() {
+	local key="$1" value="$2" old
+	old="$(uci -q get "network.$key" 2>/dev/null)"
+	[ "$old" = "$value" ] && return 1
+	uci set "network.$key=$value" || return 2
+	return 0
+}
+
+network_delete_if_present() {
+	uci -q get "network.$1" >/dev/null 2>&1 || return 1
+	uci -q delete "network.$1" || return 2
+	return 0
+}
+
+ensure_firewall_wan() {
+	local iface="$1" members
+	[ "$(uci -q get firewall.wan 2>/dev/null)" = 'zone' ] || return 1
+	members=" $(uci -q get firewall.wan.network 2>/dev/null) "
+	case "$members" in
+		*" $iface "*) return 0 ;;
+	esac
+	uci add_list firewall.wan.network="$iface" || return 2
+	uci commit firewall || return 2
+	/etc/init.d/firewall reload >/dev/null 2>&1 || return 2
+	return 0
+}
+
+configure_interface() {
+	local iface="$1" sysdev="$2" apn="$3" pin="$4" roaming="$5"
+	local type managed changed=0 rc
+
+	valid_section_name "$iface" || { state_set 'configuration-error' 'invalid-interface-name'; return 1; }
+	type="$(uci -q get "network.$iface" 2>/dev/null)"
+	managed="$(uci -q get "network.$iface.autonet_managed" 2>/dev/null)"
+	if [ -n "$type" ] && [ "$managed" != '1' ]; then
+		state_set 'configuration-conflict' 'network-section-owned-by-user'
+		return 1
+	fi
+
+	network_set_if_changed "$iface" 'interface'; rc=$?
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+	network_set_if_changed "$iface.proto" 'modemmanager'; rc=$?
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+	network_set_if_changed "$iface.device" "$sysdev"; rc=$?
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+	network_set_if_changed "$iface.autonet_managed" '1'; rc=$?
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+	network_set_if_changed "$iface.force_connection" '1'; rc=$?
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+	network_set_if_changed "$iface.allow_roaming" "$roaming"; rc=$?
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+
+	if [ -n "$apn" ]; then
+		network_set_if_changed "$iface.apn" "$apn"; rc=$?
+	else
+		network_delete_if_present "$iface.apn"; rc=$?
+	fi
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+
+	if [ -n "$pin" ]; then
+		network_set_if_changed "$iface.pincode" "$pin"; rc=$?
+	else
+		network_delete_if_present "$iface.pincode"; rc=$?
+	fi
+	[ "$rc" = 0 ] && changed=1; [ "$rc" -lt 2 ] || return 1
+
+	[ "$changed" = 0 ] || uci commit network || return 1
+	ensure_firewall_wan "$iface" || {
+		[ "$?" = 1 ] && state_set 'firewall-not-ready' 'wan-zone-missing' || state_set 'firewall-error' 'unable-to-add-cellular'
+		return 1
+	}
+	return 0
+}
+
+interface_up() {
+	ubus call "network.interface.$1" status 2>/dev/null | grep -q '"up": true'
+}
+
+maybe_ifup() {
+	local iface="$1" interval="$2" now last=0
+	interface_up "$iface" && { state_set 'connected' 'netifd-interface-up'; return 0; }
+	now="$(date +%s 2>/dev/null || echo 0)"
+	[ -r "$STATE_DIR/last_ifup" ] && last="$(cat "$STATE_DIR/last_ifup" 2>/dev/null)"
+	case "$last" in *[!0-9]*|'') last=0;; esac
+	[ $((now - last)) -ge "$interval" ] || { state_set 'waiting-reconnect' 'retry-throttled'; return 0; }
+	echo "$now" > "$STATE_DIR/last_ifup"
+	ifup "$iface" >/dev/null 2>&1 || true
+	state_set 'connecting' 'netifd-ifup-requested'
+}
+
+run_once() {
+	local enabled iface apn pin roaming interval bdf driver pair modem sysdev state sim
+	enabled="$(cfg_get enabled)"; [ -n "$enabled" ] || enabled=1
+	[ "$enabled" = '1' ] || { state_set 'disabled' 'uci-disabled'; return 0; }
+	iface="$(cfg_get interface)"; [ -n "$iface" ] || iface='cellular'
+	apn="$(cfg_get apn)"; pin="$(cfg_get pincode)"
+	roaming="$(cfg_get allow_roaming)"; [ "$roaming" = '1' ] || roaming='0'
+	interval="$(cfg_get reconnect_interval)"
+	case "$interval" in ''|*[!0-9]*) interval=60;; esac
+	[ "$interval" -ge 15 ] 2>/dev/null || interval=15
+
+	command -v mmcli >/dev/null 2>&1 || { state_set 'dependency-missing' 'mmcli-not-found'; return 1; }
+	[ -x /etc/init.d/modemmanager ] || { state_set 'dependency-missing' 'modemmanager-init-missing'; return 1; }
+	grep -q 'add_protocol modemmanager' /lib/netifd/proto/modemmanager.sh 2>/dev/null || {
+		state_set 'dependency-missing' 'modemmanager-netifd-or-mbim-feature-missing'; return 1;
+	}
+	/etc/init.d/modemmanager start >/dev/null 2>&1 || true
+	load_matching_modules
+	bdf="$(find_dw_bdf)" || { state_set 'waiting-pci' '105b:e11d-or-e11e-not-enumerated'; return 0; }
+	driver="$(pci_driver_for "$bdf")"
+	[ -n "$driver" ] || { state_set 'waiting-mhi-driver' "pci-$bdf-unbound"; return 0; }
+	report_existing_target_wwan "$bdf"
+	have_mbim_node || { state_set 'waiting-mbim-node' "pci-$bdf-driver-bound"; return 0; }
+	pair="$(find_dw_modem "$bdf")" || { state_set 'waiting-modemmanager' "pci-$bdf-not-managed-or-device-physdev-mismatch"; return 0; }
+	modem="${pair%%|*}"; sysdev="${pair#*|}"
+	attempt_sim_slot_switch "$modem" && return 0
+	fcc_method_unverified "$modem" && log 'fcc-method-unverified: no DW5934e/X72 FOX parameter is supplied'
+	state="$(key_value "$modem" 'modem.generic.state')"
+	sim="$(key_value "$modem" 'modem.generic.sim')"
+	case "$sim" in ''|/|'(null)'|'--') state_set 'waiting-sim' 'no-sim-reported'; return 0;; esac
+	case "$state" in *locked*) [ -n "$pin" ] || { state_set 'waiting-sim-pin' 'pin-required'; return 0; };; esac
+	configure_interface "$iface" "$sysdev" "$apn" "$pin" "$roaming" || return 1
+	maybe_ifup "$iface" "$interval"
+}
+
+show_status() {
+	if [ -r "$STATE_FILE" ]; then
+		cat "$STATE_FILE"
+	else
+		echo 'state=not-started'
+		echo 'detail=no-runtime-state'
+	fi
+	echo "pci_105b_e11d_or_e11e=$(find_dw_bdf 2>/dev/null || echo absent)"
+}
+
+case "$1" in
+	daemon)
+		mkdir -p "$STATE_DIR" || exit 1
+		while :; do run_once || true; sleep 10; done
+		;;
+	status) show_status ;;
+	key-from-facts) [ -r "$2" ] && key_from_facts "$(cat "$2")" "$3" ;;
+	slot-from-facts) [ -r "$2" ] && slot_value "$(cat "$2")" "$3" ;;
+	*) echo "Usage: $0 {daemon|status}" >&2; exit 2 ;;
+esac

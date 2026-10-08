@@ -1,0 +1,378 @@
+#!/bin/false
+exit 126
+#!/usr/bin/env python3
+"""Atomically install and live-verify module-internal FCC/DMS persistence."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+import re
+import sys
+import time
+
+PARENT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PARENT))
+
+from run_live_rfs_repair_20260828 import Remote, read_sudo_password  # noqa: E402
+
+
+HERE = Path(__file__).resolve().parent
+DMS_SOURCE = (
+    HERE.parents[1]
+    / "module_internal_online_20260827"
+    / "dw5934e_dms_online_once_shuttingdown_60a8592b"
+)
+
+EXPECTED = {
+    "dms": "60a8592b6310b03230c45f205ee901add65b16591d16a20001763d120174cc61",
+    "ctl": "b059e447fe8013e8a4da31cbdba02ceb9172bd821e3aa3766f7d9798d599f6bc",
+    "fcc": "55cfd63c2778fb12a00a864e208569bd484d1904e357cb721bfd18760d32f86b",
+    "init": "1a714f4de08a808f0f63030e9a2cae2c86183038235c4f7c03b2d91f9a0ed988",
+}
+VENDOR = {
+    "/usr/bin/fox_ap_qmi_svc": "c498823e0aae6eb1d03ef52d18084f24b911a136e08e371723813b6675111f55",
+    "/usr/bin/mbimd": "e962d951047964fd4c42e7dd6e22220cd47ccff76db4044abd9fbe2a54d047a7",
+    "/usr/lib/libqmi_cci.so.1.0.0": "d568f6b08e984925e3cdbf90e5d3f07e2100c0716784ed62594acb94c9ada83f",
+    "/usr/lib/libqmiservices.so": "4bd9321503991a444286ec5f11886c9db6b3f1c2e2ba7a54911d32ddd9803eb3",
+}
+
+ONE_SHA = hashlib.sha256(b"\x01").hexdigest()
+ZERO_SHA = hashlib.sha256(b"\x00").hexdigest()
+
+CANDIDATES = {
+    "dms": "/tmp/.dw5934e_factory_dms_20260828.candidate",
+    "ctl": "/tmp/.dw5934e_factory_ctl_20260828.candidate",
+    "fcc": "/tmp/.dw5934e_factory_fcc_20260828.candidate",
+    "init": "/tmp/.dw5934e_factory_init_20260828.candidate",
+    "installer": "/tmp/.dw5934e_factory_install_20260828.sh",
+}
+
+TARGETS = {
+    "dms": "/data/dw_dms",
+    "ctl": "/data/dw_dms_ctl",
+    "fcc": "/etc/init.d/fcc_bypass",
+    "init": "/etc/init.d/dw_dms",
+}
+
+QMI_LOCK = "/var/lock/codex-e11d-dms-online-20260828.lock"
+
+
+def digest(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def octal_bytes(data: bytes) -> str:
+    return "".join(f"\\0{byte:03o}" for byte in data)
+
+
+def module_ok(remote: Remote, command: str, timeout: int = 90) -> str:
+    rc, out = remote.module(command, timeout=timeout)
+    print(out, end="" if out.endswith("\n") else "\n")
+    if rc != 0 or "ADB_RESYNC_OK" not in out:
+        raise RuntimeError(f"module command failed rc={rc}")
+    return out
+
+
+def upload(remote: Remote, path: str, data: bytes, expected: str) -> None:
+    module_ok(
+        remote,
+        f"set -eu; test ! -e {path}; test ! -L {path}; "
+        f"set -C; : > {path}; chmod 0600 {path}; echo CANDIDATE_CREATED={path}",
+        timeout=45,
+    )
+    try:
+        for offset in range(0, len(data), 240):
+            chunk = octal_bytes(data[offset : offset + 240])
+            module_ok(remote, f"set -eu; printf '%b' '{chunk}' >> {path}", timeout=45)
+        module_ok(
+            remote,
+            f"set -eu; test \"$(sha256sum {path} | cut -d' ' -f1)\" = {expected}; "
+            f"echo CANDIDATE_HASH_OK={path}",
+            timeout=45,
+        )
+    except Exception:
+        try:
+            module_ok(remote, f"rm -f {path}; echo CANDIDATE_ROLLED_BACK={path}", timeout=30)
+        except Exception:
+            pass
+        raise
+
+
+def vendor_guard() -> str:
+    return "\n".join(
+        f'test "$(sha256sum {path} | cut -d\' \' -f1)" = {sha}'
+        for path, sha in VENDOR.items()
+    )
+
+
+def rfs_guard() -> str:
+    return r"""for p in /data/persist/rfs/shared /data/persist/hlos_rfs/shared; do
+    test -d "$p"; test ! -L "$p"
+    test "$(stat -c '%a:%U:%G' "$p")" = '777:system:system'
+    test "$(ls -dZ "$p" | awk '{print $1}')" = 'u:r:tftp_server.datafile'
+done"""
+
+
+def module_preflight() -> str:
+    candidate_checks = " ".join(CANDIDATES.values())
+    target_checks = " ".join(
+        list(TARGETS.values())
+        + [
+            "/etc/rc.d/S10fcc_bypass",
+            "/etc/rc.d/S86dw_dms",
+            "/data/dw_dms.last",
+            "/tmp/dw_dms.lock",
+            "/tmp/dw_dms.success",
+        ]
+    )
+    return f"""set -eu
+echo FACTORY_PERSISTENCE_PREFLIGHT_BEGIN
+grep -q "DISTRIB_TARGET='sdx75/generic'" /etc/openwrt_release
+grep -q ' /data ubifs rw' /proc/mounts
+grep -q ' /etc overlay rw' /proc/mounts
+test "$(getenforce)" = Enforcing
+test "$(cat /sys/class/remoteproc/remoteproc0/state)" = running
+{vendor_guard()}
+{rfs_guard()}
+test -d /data/mbimd; test ! -L /data/mbimd
+test -f /data/mbimd/disable_fcc_lock_flag; test ! -L /data/mbimd/disable_fcc_lock_flag
+test "$(stat -c %s /data/mbimd/disable_fcc_lock_flag)" = 1
+test "$(sha256sum /data/mbimd/disable_fcc_lock_flag | cut -d' ' -f1)" = {ONE_SHA}
+for p in /tmp/fx_fcc_lock_status_flag /tmp/fx_radio_status_flag /tmp/fx_os_airplane_mode_flag; do test ! -e "$p"; test ! -L "$p"; done
+for p in {target_checks}; do test ! -e "$p"; test ! -L "$p"; done
+for p in {candidate_checks}; do test ! -e "$p"; test ! -L "$p"; done
+pidof tftp_server >/dev/null
+pidof mbimd >/dev/null
+pidof fox_ap_qmi_svc >/dev/null
+echo FACTORY_PERSISTENCE_PREFLIGHT_OK
+"""
+
+
+def installer_script() -> bytes:
+    temp = {
+        "dms": "/data/.dw_dms.dw5934e-20260828.tmp",
+        "ctl": "/data/.dw_dms_ctl.dw5934e-20260828.tmp",
+        "fcc": "/etc/init.d/.fcc_bypass.dw5934e-20260828.tmp",
+        "init": "/etc/init.d/.dw_dms.dw5934e-20260828.tmp",
+    }
+    absent = " ".join(
+        list(TARGETS.values())
+        + list(temp.values())
+        + ["/etc/rc.d/S10fcc_bypass", "/etc/rc.d/S86dw_dms", "/data/dw_dms.last"]
+    )
+    candidate_hashes = "\n".join(
+        f'test "$(sha256sum {CANDIDATES[name]} | cut -d\' \' -f1)" = {EXPECTED[name]}'
+        for name in ("dms", "ctl", "fcc", "init")
+    )
+    temp_hashes = "\n".join(
+        f'test "$(sha256sum {temp[name]} | cut -d\' \' -f1)" = {EXPECTED[name]}'
+        for name in ("dms", "ctl", "fcc", "init")
+    )
+    target_hashes = "\n".join(
+        f'test "$(sha256sum {TARGETS[name]} | cut -d\' \' -f1)" = {EXPECTED[name]}'
+        for name in ("dms", "ctl", "fcc", "init")
+    )
+    body = f"""#!/bin/sh
+set -eu
+echo FACTORY_PERSISTENCE_INSTALL_BEGIN
+grep -q "DISTRIB_TARGET='sdx75/generic'" /etc/openwrt_release
+grep -q ' /data ubifs rw' /proc/mounts
+grep -q ' /etc overlay rw' /proc/mounts
+test "$(getenforce)" = Enforcing
+test "$(cat /sys/class/remoteproc/remoteproc0/state)" = running
+{vendor_guard()}
+{rfs_guard()}
+for p in {absent}; do test ! -e "$p"; test ! -L "$p"; done
+{candidate_hashes}
+
+committed=0
+rollback() {{
+    rc=$?
+    trap - 0 HUP INT TERM
+    if [ "$committed" -eq 0 ]; then
+        rm -f /etc/rc.d/S86dw_dms /etc/rc.d/S10fcc_bypass
+        rm -f {TARGETS['init']} {TARGETS['fcc']} {TARGETS['ctl']} {TARGETS['dms']}
+        rm -f {temp['init']} {temp['fcc']} {temp['ctl']} {temp['dms']}
+        sync
+    fi
+    exit "$rc"
+}}
+trap rollback 0 HUP INT TERM
+
+set -C
+cat {CANDIDATES['dms']} > {temp['dms']}
+cat {CANDIDATES['ctl']} > {temp['ctl']}
+cat {CANDIDATES['fcc']} > {temp['fcc']}
+cat {CANDIDATES['init']} > {temp['init']}
+chmod 0755 {temp['dms']} {temp['ctl']} {temp['fcc']} {temp['init']}
+{temp_hashes}
+
+mv {temp['dms']} {TARGETS['dms']}
+mv {temp['ctl']} {TARGETS['ctl']}
+mv {temp['fcc']} {TARGETS['fcc']}
+mv {temp['init']} {TARGETS['init']}
+ln -s ../init.d/fcc_bypass /etc/rc.d/S10fcc_bypass
+ln -s ../init.d/dw_dms /etc/rc.d/S86dw_dms
+{target_hashes}
+test "$(readlink /etc/rc.d/S10fcc_bypass)" = ../init.d/fcc_bypass
+test "$(readlink /etc/rc.d/S86dw_dms)" = ../init.d/dw_dms
+sync
+committed=1
+trap - 0 HUP INT TERM
+echo FACTORY_PERSISTENCE_INSTALL_COMMITTED
+"""
+    return body.encode("ascii")
+
+
+def activate_and_verify(remote: Remote) -> str:
+    command = f"""set -eu
+echo FACTORY_PERSISTENCE_ACTIVATE_BEGIN
+{TARGETS['fcc']} start
+test "$(stat -c %s /data/mbimd/disable_fcc_lock_flag)" = 1
+test "$(sha256sum /data/mbimd/disable_fcc_lock_flag | cut -d' ' -f1)" = {ONE_SHA}
+test "$(stat -c %s /tmp/fx_fcc_lock_status_flag)" = 1
+test "$(sha256sum /tmp/fx_fcc_lock_status_flag | cut -d' ' -f1)" = {ZERO_SHA}
+test "$(stat -c %s /tmp/fx_radio_status_flag)" = 1
+test "$(sha256sum /tmp/fx_radio_status_flag | cut -d' ' -f1)" = {ONE_SHA}
+test "$(stat -c %s /tmp/fx_os_airplane_mode_flag)" = 1
+test "$(sha256sum /tmp/fx_os_airplane_mode_flag | cut -d' ' -f1)" = {ZERO_SHA}
+{TARGETS['init']} start
+i=0
+while [ "$i" -lt 150 ]; do
+    if [ -f /data/dw_dms.last ]; then
+        state="$(cat /data/dw_dms.last)"
+        case "$state" in
+            state=online*) break ;;
+            state=terminal_*|state=services_not_ready*|state=safe_retries_exhausted*|state=hash_rejected*)
+                echo "DMS_TERMINAL=$state"; exit 31 ;;
+        esac
+    fi
+    sleep 1
+    i=$((i + 1))
+done
+test -f /data/dw_dms.last
+grep -q '^state=online ' /data/dw_dms.last
+test -f /tmp/dw_dms.success
+echo "DMS_LAST=$(cat /data/dw_dms.last)"
+echo "DMS_SUCCESS=$(cat /tmp/dw_dms.success)"
+{rfs_guard()}
+tftp1="$(pidof tftp_server)"
+sleep 8
+tftp2="$(pidof tftp_server)"
+test -n "$tftp1"; test "$tftp1" = "$tftp2"
+echo "TFTP_STABLE_PID=$tftp2"
+echo FACTORY_PERSISTENCE_ACTIVATE_OK
+"""
+    return module_ok(remote, command, timeout=210)
+
+
+def qmi_read(remote: Remote, option: str, timeout: int = 35) -> tuple[int, str]:
+    command = (
+        "set -o pipefail; mkdir -p /var/lock; "
+        f"timeout -k 3 25 flock {QMI_LOCK} qmicli -p -d /dev/mhi_QMI0 "
+        f"--device-open-qmi {option} 2>&1"
+    )
+    return remote.sudo(command, timeout=timeout)
+
+
+def main() -> int:
+    artifacts = {
+        "dms": DMS_SOURCE.read_bytes(),
+        "ctl": (HERE / "dw_dms_ctl").read_bytes(),
+        "fcc": (HERE / "fcc_bypass.init").read_bytes(),
+        "init": (HERE / "dw_dms.init").read_bytes(),
+    }
+    for name, data in artifacts.items():
+        if digest(data) != EXPECTED[name]:
+            raise RuntimeError(f"local artifact hash mismatch: {name}")
+
+    report: dict[str, object] = {
+        "schema": "codex.dw5934e.factory-module-persistence-deployment.v1",
+        "artifact_sha256": EXPECTED,
+        "vendor_sha256": VENDOR,
+        "host_dms_set_requests": 0,
+        "dms_reset_requests": 0,
+        "device_reboots": 0,
+        "driver_actions": 0,
+        "cold_boot_verified": False,
+    }
+    remote = Remote(read_sudo_password())
+    uploaded: list[str] = []
+    try:
+        report["preflight"] = module_ok(remote, module_preflight(), timeout=70)
+
+        for name in ("dms", "ctl", "fcc", "init"):
+            upload(remote, CANDIDATES[name], artifacts[name], EXPECTED[name])
+            uploaded.append(CANDIDATES[name])
+
+        installer = installer_script()
+        installer_sha = digest(installer)
+        upload(remote, CANDIDATES["installer"], installer, installer_sha)
+        uploaded.append(CANDIDATES["installer"])
+
+        install_out = module_ok(
+            remote,
+            f"set -eu; test \"$(sha256sum {CANDIDATES['installer']} | cut -d' ' -f1)\" = {installer_sha}; "
+            f"chmod 0700 {CANDIDATES['installer']}; {CANDIDATES['installer']}",
+            timeout=120,
+        )
+        if "FACTORY_PERSISTENCE_INSTALL_COMMITTED" not in install_out:
+            raise RuntimeError("install commit sentinel missing")
+        report["install"] = install_out
+        report["installer_sha256"] = installer_sha
+
+        report["activation"] = activate_and_verify(remote)
+
+        dms_records: list[dict[str, object]] = []
+        for index in range(3):
+            rc, out = qmi_read(remote, "--dms-get-operating-mode")
+            print(f"=== DMS_POST_{index + 1} rc={rc} ===")
+            print(out, end="" if out.endswith("\n") else "\n")
+            mode = re.search(r"Mode: '([^']+)'", out)
+            dms_records.append({"rc": rc, "mode": mode.group(1) if mode else None, "output": out})
+            if rc != 0 or not mode or mode.group(1) != "online" or "HW restricted: 'no'" not in out:
+                raise RuntimeError("DMS post-deployment verification failed")
+            time.sleep(2)
+        report["dms_post"] = dms_records
+
+        rc, uim = qmi_read(remote, "--uim-get-card-status", timeout=45)
+        print(f"=== UIM_CARD rc={rc} ===")
+        print(uim, end="" if uim.endswith("\n") else "\n")
+        report["uim"] = {"rc": rc, "output": uim}
+        if rc != 0 or "Card state: 'present'" not in uim or "Card error: 'none'" not in uim:
+            raise RuntimeError("SIM card is not ready")
+
+        rc, nas = qmi_read(remote, "--nas-get-serving-system", timeout=45)
+        print(f"=== NAS_SERVING rc={rc} ===")
+        print(nas, end="" if nas.endswith("\n") else "\n")
+        report["nas"] = {"rc": rc, "output": nas}
+
+        rc, signal = qmi_read(remote, "--nas-get-signal-info", timeout=45)
+        print(f"=== NAS_SIGNAL rc={rc} ===")
+        print(signal, end="" if signal.endswith("\n") else "\n")
+        report["signal"] = {"rc": rc, "output": signal}
+
+        report["state"] = "installed_live_online_sim_readable"
+        report["finished_unix"] = time.time()
+        print("FACTORY_MODULE_PERSISTENCE_DEPLOYMENT=PASS")
+        return 0
+    finally:
+        for path in uploaded:
+            try:
+                module_ok(remote, f"rm -f {path}; echo CANDIDATE_REMOVED={path}", timeout=30)
+            except Exception:
+                pass
+        remote.close()
+        out_path = HERE / "deployment_result_20260828.json"
+        out_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"RESULT_FILE={out_path}")
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as exc:
+        print(f"FACTORY_MODULE_PERSISTENCE_DEPLOYMENT=FAIL:{type(exc).__name__}:{exc}", file=sys.stderr)
+        raise

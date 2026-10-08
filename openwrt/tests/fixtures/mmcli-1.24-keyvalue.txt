@@ -1,0 +1,8 @@
+  modem.generic.device:             /sys/devices/platform/11280000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/mhi0
+  modem.generic.physdev:            /sys/devices/platform/11280000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0
+  modem.generic.state:              registered
+  modem.generic.sim:                /org/freedesktop/ModemManager1/SIM/1
+  modem.generic.primary-sim-slot:   1
+  modem.generic.sim-slots.length:   2
+  modem.generic.sim-slots.value[0]: slot 1: /
+  modem.generic.sim-slots.value[1]: slot 2: /org/freedesktop/ModemManager1/SIM/1

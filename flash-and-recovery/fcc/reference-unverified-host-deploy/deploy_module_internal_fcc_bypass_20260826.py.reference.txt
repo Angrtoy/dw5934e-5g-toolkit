@@ -1,0 +1,320 @@
+#!/bin/false
+exit 126
+#!/usr/bin/env python3
+"""Deploy the portable FCC/radio boot state inside the current E11D module.
+
+This program runs on the Ubuntu host as root and uses the existing MHI ADB
+transport only to modify the module's own OpenWrt FoxUSR/overlay files.  It does
+not install or enable any Ubuntu service.  Every pre-existing target must be
+absent, vendor binaries are pinned by hash, installation is verified, and an
+in-module rollback trap restores the original absent state on any failure.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import time
+
+
+ADB_HELPER = Path(
+    "<REDACTED-PRIVATE-PATH>"
+)
+ADB_DEVICE = "/dev/mhi_ADB"
+PCI_DIR = Path("/sys/bus/pci/devices/0000:07:00.0")
+ALLOWED_ROOT = Path("<REDACTED-PRIVATE-PATH>")
+
+EXPECTED_VENDOR_HASHES = {
+    "/etc/init.d/fox_ap_qmi_svc": (
+        "14fbdbf1188400d6c55a163394babeaa43b4385c2c9e358176688c0e00dcbbc3"
+    ),
+    "/usr/bin/fox_ap_qmi_svc": (
+        "095636e348d067e39402bc6737cacf76919dd80cd7ffddb53e0a97ddeb0f1faa"
+    ),
+    "/usr/lib/libfxcm.so": (
+        "a0c888f0ff504701bdb69c90986f74fea97abaeca582367cc0f71745d1bf4d48"
+    ),
+}
+
+INIT_CONTENT = b"""#!/bin/sh /etc/rc.common
+START=10
+STOP=90
+
+start() {
+    umask 022
+    mkdir -p /data/mbimd || return 1
+    printf '1\\n' > /data/mbimd/disable_fcc_lock_flag || return 1
+    printf '0\\n' > /tmp/fx_fcc_lock_status_flag || return 1
+    printf '1\\n' > /tmp/fx_radio_status_flag || return 1
+    printf '0\\n' > /tmp/fx_os_airplane_mode_flag || return 1
+}
+
+stop() {
+    return 0
+}
+"""
+INIT_SHA256 = hashlib.sha256(INIT_CONTENT).hexdigest()
+
+INIT_PATH = "/etc/init.d/fcc_bypass"
+START_LINK = "/etc/rc.d/S10fcc_bypass"
+STOP_LINK = "/etc/rc.d/K90fcc_bypass"
+HLOS_FLAG = "/data/mbimd/disable_fcc_lock_flag"
+RUNTIME_FLAGS = (
+    "/tmp/fx_fcc_lock_status_flag",
+    "/tmp/fx_radio_status_flag",
+    "/tmp/fx_os_airplane_mode_flag",
+)
+CANDIDATE = "/tmp/fcc_bypass.candidate.codex-20260826"
+INIT_TEMP = "/etc/init.d/.fcc_bypass.codex-20260826.tmp"
+HLOS_TEMP = "/data/mbimd/.disable_fcc_lock_flag.codex-20260826.tmp"
+
+
+def sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def fsync_write(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("wb") as handle:
+        handle.write(data)
+        handle.flush()
+        os.fsync(handle.fileno())
+    dir_fd = os.open(path.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    try:
+        os.fsync(dir_fd)
+    finally:
+        os.close(dir_fd)
+
+
+def save_json(path: Path, value: object) -> None:
+    fsync_write(
+        path,
+        (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("ascii"),
+    )
+
+
+def read_ascii(path: Path) -> str:
+    return path.read_text(encoding="ascii", errors="strict").strip().lower()
+
+
+def run_module(command: str, timeout: int = 120) -> subprocess.CompletedProcess[str]:
+    result = subprocess.run(
+        [
+            "/usr/bin/python3",
+            str(ADB_HELPER),
+            "--device",
+            ADB_DEVICE,
+            "--timeout",
+            str(timeout),
+            command,
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=timeout + 30,
+        check=False,
+    )
+    if result.returncode != 0 or "ADB_RESYNC_OK" not in result.stdout:
+        raise RuntimeError(
+            f"module command failed rc={result.returncode}: {result.stdout[-1000:]}"
+        )
+    return result
+
+
+def absent_guard() -> str:
+    paths = [
+        INIT_PATH,
+        START_LINK,
+        STOP_LINK,
+        HLOS_FLAG,
+        *RUNTIME_FLAGS,
+        CANDIDATE,
+        INIT_TEMP,
+        HLOS_TEMP,
+    ]
+    return "; ".join(f"test ! -e {path} && test ! -L {path}" for path in paths)
+
+
+def vendor_hash_guard() -> str:
+    return "; ".join(
+        f"test \"$(sha256sum {path} | cut -d' ' -f1)\" = {digest}"
+        for path, digest in EXPECTED_VENDOR_HASHES.items()
+    )
+
+
+def octal_printf_bytes(data: bytes) -> str:
+    # BusyBox printf %b accepts the POSIX \0ddd octal escape form.
+    return "".join(f"\\0{byte:03o}" for byte in data)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output-dir", type=Path, required=True)
+    args = parser.parse_args()
+
+    output = args.output_dir.resolve()
+    allowed = ALLOWED_ROOT.resolve()
+    if output == allowed or allowed not in output.parents:
+        raise RuntimeError("output directory outside guarded root")
+    if os.geteuid() != 0:
+        raise RuntimeError("must run as root")
+    if read_ascii(PCI_DIR / "vendor") != "0x105b":
+        raise RuntimeError("PCI vendor mismatch")
+    if read_ascii(PCI_DIR / "device") != "0xe11d":
+        raise RuntimeError("PCI device mismatch")
+    if not ADB_HELPER.is_file() or not Path(ADB_DEVICE).exists():
+        raise RuntimeError("MHI ADB transport unavailable")
+
+    output.mkdir(parents=True, exist_ok=False)
+    fsync_write(output / "fcc_bypass.expected", INIT_CONTENT)
+    report: dict[str, object] = {
+        "state": "preflight",
+        "started_unix": time.time(),
+        "init_sha256": INIT_SHA256,
+        "ubuntu_service_installed": False,
+        "targets": {
+            "module_hlos_persistent": HLOS_FLAG,
+            "module_hlos_init": INIT_PATH,
+            "module_mpss_persistent": "/fx/disable_fcc_lock_flag",
+        },
+    }
+    save_json(output / "transaction.json", report)
+
+    preflight = (
+        "set -eu; "
+        "grep -q \"DISTRIB_TARGET='sdx75/generic'\" /etc/openwrt_release; "
+        "grep -q ' /data ubifs rw' /proc/mounts; "
+        "grep -q ' /etc overlay rw' /proc/mounts; "
+        "test -x /usr/bin/fox_ap_qmi_svc; test -x /etc/init.d/fox_ap_qmi_svc; "
+        f"{vendor_hash_guard()}; {absent_guard()}; "
+        "test -d /data/mbimd; test -w /data/mbimd; "
+        "test -d /etc/init.d; test -w /etc/init.d; "
+        "echo MODULE_PREDEPLOY_GUARDS_OK"
+    )
+    try:
+        pre = run_module(preflight)
+        if "MODULE_PREDEPLOY_GUARDS_OK" not in pre.stdout:
+            raise RuntimeError("module preflight sentinel missing")
+        fsync_write(output / "preflight.txt", pre.stdout.encode("utf-8"))
+        report["preflight_verified"] = True
+        save_json(output / "transaction.json", report)
+
+        encoded = octal_printf_bytes(INIT_CONTENT)
+        candidate_command = (
+            "set -eu; "
+            f"{absent_guard()}; "
+            "keep=0; "
+            f"cleanup() {{ rc=$?; trap - 0; if test \"$keep\" = 0; then rm -f {CANDIDATE}; fi; exit \"$rc\"; }}; "
+            "trap cleanup 0; "
+            f"printf '%b' '{encoded}' > {CANDIDATE}; "
+            f"test \"$(sha256sum {CANDIDATE} | cut -d' ' -f1)\" = {INIT_SHA256}; "
+            f"/bin/sh -n {CANDIDATE}; "
+            "keep=1; trap - 0; "
+            "echo MODULE_CANDIDATE_VERIFIED"
+        )
+        candidate_result = run_module(candidate_command)
+        if "MODULE_CANDIDATE_VERIFIED" not in candidate_result.stdout:
+            raise RuntimeError("module candidate sentinel missing")
+        fsync_write(
+            output / "candidate.txt", candidate_result.stdout.encode("utf-8")
+        )
+        report["candidate_verified"] = True
+        save_json(output / "transaction.json", report)
+
+        # Preconditions are repeated in the same shell session immediately before
+        # the persistent writes.  All targets were absent, so rollback can restore
+        # the exact original state without touching unrelated module files.
+        apply_command = f"""set -eu
+{vendor_hash_guard()}
+test ! -e {INIT_PATH}; test ! -L {INIT_PATH}
+test ! -e {START_LINK}; test ! -L {START_LINK}
+test ! -e {STOP_LINK}; test ! -L {STOP_LINK}
+test ! -e {HLOS_FLAG}; test ! -L {HLOS_FLAG}
+test ! -e {INIT_TEMP}; test ! -e {HLOS_TEMP}
+for f in {' '.join(RUNTIME_FLAGS)}; do test ! -e "$f"; done
+test "$(sha256sum {CANDIDATE} | cut -d' ' -f1)" = {INIT_SHA256}
+rollback=1
+cleanup() {{
+    rc=$?
+    trap - 0
+    if test "$rollback" = 1; then
+        if test -e {INIT_PATH}; then {INIT_PATH} disable >/dev/null 2>&1 || true; fi
+        rm -f {START_LINK} {STOP_LINK} {INIT_PATH} {INIT_TEMP} {CANDIDATE}
+        rm -f {HLOS_FLAG} {HLOS_TEMP} {' '.join(RUNTIME_FLAGS)}
+        sync
+    fi
+    exit "$rc"
+}}
+trap cleanup 0
+cat {CANDIDATE} > {INIT_TEMP}
+chmod 0755 {INIT_TEMP}
+test "$(sha256sum {INIT_TEMP} | cut -d' ' -f1)" = {INIT_SHA256}
+printf '1\n' > {HLOS_TEMP}
+chmod 0644 {HLOS_TEMP}
+sync
+mv {INIT_TEMP} {INIT_PATH}
+mv {HLOS_TEMP} {HLOS_FLAG}
+{INIT_PATH} enable
+{INIT_PATH} start
+sync
+test "$(sha256sum {INIT_PATH} | cut -d' ' -f1)" = {INIT_SHA256}
+test -L {START_LINK}; test "$(readlink {START_LINK})" = ../init.d/fcc_bypass
+test -L {STOP_LINK}; test "$(readlink {STOP_LINK})" = ../init.d/fcc_bypass
+test "$(cat {HLOS_FLAG})" = 1
+test "$(cat {RUNTIME_FLAGS[0]})" = 0
+test "$(cat {RUNTIME_FLAGS[1]})" = 1
+test "$(cat {RUNTIME_FLAGS[2]})" = 0
+pidof fox_ap_qmi_svc >/dev/null
+rm -f {CANDIDATE}
+rollback=0
+trap - 0
+echo MODULE_INTERNAL_FCC_BYPASS_APPLY_OK
+"""
+        applied = run_module(apply_command)
+        if "MODULE_INTERNAL_FCC_BYPASS_APPLY_OK" not in applied.stdout:
+            raise RuntimeError("module apply sentinel missing")
+        fsync_write(output / "apply.txt", applied.stdout.encode("utf-8"))
+
+        verify_command = (
+            "set -eu; "
+            f"test \"$(sha256sum {INIT_PATH} | cut -d' ' -f1)\" = {INIT_SHA256}; "
+            f"test -L {START_LINK}; test \"$(readlink {START_LINK})\" = ../init.d/fcc_bypass; "
+            f"test -L {STOP_LINK}; test \"$(readlink {STOP_LINK})\" = ../init.d/fcc_bypass; "
+            f"test \"$(cat {HLOS_FLAG})\" = 1; "
+            f"test \"$(cat {RUNTIME_FLAGS[0]})\" = 0; "
+            f"test \"$(cat {RUNTIME_FLAGS[1]})\" = 1; "
+            f"test \"$(cat {RUNTIME_FLAGS[2]})\" = 0; "
+            "pidof fox_ap_qmi_svc >/dev/null; "
+            "echo MODULE_INTERNAL_FCC_BYPASS_VERIFIED"
+        )
+        verified = run_module(verify_command)
+        if "MODULE_INTERNAL_FCC_BYPASS_VERIFIED" not in verified.stdout:
+            raise RuntimeError("module verification sentinel missing")
+        fsync_write(output / "verify.txt", verified.stdout.encode("utf-8"))
+        report.update(
+            state="module_internal_persistence_verified",
+            applied=True,
+            verified=True,
+            finished_unix=time.time(),
+        )
+        save_json(output / "transaction.json", report)
+        print(json.dumps({"state": report["state"], "verified": True}))
+        return 0
+    except Exception as exc:
+        report.update(
+            state="failed",
+            error=f"{type(exc).__name__}: {exc}",
+            verified=False,
+            finished_unix=time.time(),
+        )
+        save_json(output / "transaction.json", report)
+        print(json.dumps({"state": "failed", "verified": False}))
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

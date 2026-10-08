@@ -1,0 +1,40 @@
+START_CONFIG
+Description     : SS-SDX55
+Type            : Hardware
+Size            : 20100
+Version         : 167804928
+ID              : 0AC5B18670A37720E8482E292879C9E8B99ACE0B
+Sub_0 Status : Active
+Sub_1 Status : Inactive
+Sub_2 Status : Inactive
+END_CONFIG
+START_CONFIG
+Description     : ROW_Commercial
+Type            : Software
+Size            : 45700
+Version         : 167839753
+ID              : 804C2C464D18E001D88BBCA7B71B8F8F8556BAEA
+Sub_0 Status : Active
+Sub_1 Status : Inactive
+Sub_2 Status : Inactive
+END_CONFIG
+START_CONFIG
+Description     : HW_DEFAULT
+Type            : Hardware
+Size            : 64112
+Version         : 182518018
+ID              :
+Sub_0 Status : Default
+Sub_1 Status : Default
+Sub_2 Status : Default
+END_CONFIG
+START_CONFIG
+Description     : SW_DEFAULT
+Type            : Software
+Size            : 26792
+Version         : 182452227
+ID              :
+Sub_0 Status : Default
+Sub_1 Status : Default
+Sub_2 Status : Default
+END_CONFIG

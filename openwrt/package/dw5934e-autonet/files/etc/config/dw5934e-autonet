@@ -1,0 +1,15 @@
+config autonet 'main'
+	option enabled '1'
+	option interface 'cellular'
+	# Leave APN blank to let ModemManager apply automatic carrier configuration.
+	option apn ''
+	# Set only when the SIM actually reports a PIN lock.
+	option pincode ''
+	# Switch only from a definitely empty active slot to one definitely present slot.
+	option auto_sim_slot '1'
+	# No DW5934e/X72 FOX magic parameter is publicly verified; never guess it.
+	option fcc_authentication '0'
+	# Safe default: never enable roaming implicitly.
+	option allow_roaming '0'
+	# Minimum seconds between explicit netifd ifup requests while disconnected.
+	option reconnect_interval '60'

@@ -1,0 +1,13 @@
+{
+  "schema": "dw5934e.dell-package-policy.v1",
+  "package": {
+    "fileName": "Dell-Wireless-5934e-and-Qualcomm-Snapdragon-X72-Firmware_KNP7D_WIN64_0.1.0.32_A10.EXE",
+    "sha256": "63fe8a2605c81720e427aeaca47919a76a695f610a5222f83e6d22b2c0ce1d55",
+    "requiredSignerSubjectContains": "CN=Dell Technologies Inc.",
+    "allowedAction": "driver_component_extract_only",
+    "extractArguments": ["/s", "/drivers=<new ProgramData DW5934e-installer extracted directory>"]
+  },
+  "windows11DriverRoot": "Production/Windows10-x64/22000/Drivers",
+  "approvedNetworkInfsInOrder": ["MhiHost.inf", "QmuxMdm.inf", "qcmbbnetadapter.inf"],
+  "prohibited": ["/driveronly", "run firmware updater", "run package install workflow", "use copied OEM INF", "use copied OEM binary", "install arbitrary INF", "modify APN"]
+}

@@ -1,0 +1,2504 @@
+{
+  "revision": "MF650_2491007_rounded_side8_v5",
+  "mesh_validation": {
+    "main_chassis": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 29252,
+      "volume_mm3": 68498.42,
+      "bounds_mm": [
+        [
+          -80.5,
+          -45.0,
+          -7.3
+        ],
+        [
+          80.5,
+          45.0,
+          26.9
+        ]
+      ]
+    },
+    "front_bezel": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 52794,
+      "volume_mm3": 31924.282,
+      "bounds_mm": [
+        [
+          -80.0,
+          -45.0,
+          19.9
+        ],
+        [
+          80.0,
+          45.0,
+          29.6
+        ]
+      ]
+    },
+    "rear_cover_no_sma": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 12516,
+      "volume_mm3": 36478.155,
+      "bounds_mm": [
+        [
+          -80.0,
+          -45.0,
+          -10.0
+        ],
+        [
+          80.0,
+          45.0,
+          -7.4
+        ]
+      ]
+    },
+    "left_side_antenna_panel_4x1": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 4248,
+      "volume_mm3": 5546.219,
+      "bounds_mm": [
+        [
+          -65.0,
+          -45.0,
+          -7.2
+        ],
+        [
+          65.0,
+          -42.6,
+          11.8
+        ]
+      ]
+    },
+    "right_side_antenna_panel_4x1": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 4248,
+      "volume_mm3": 5546.219,
+      "bounds_mm": [
+        [
+          -65.0,
+          42.6,
+          -7.2
+        ],
+        [
+          65.0,
+          45.0,
+          11.8
+        ]
+      ]
+    },
+    "registered_source_top_feature_frame": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 24648,
+      "volume_mm3": 10706.036,
+      "bounds_mm": [
+        [
+          -73.2083,
+          -34.4529,
+          14.4
+        ],
+        [
+          73.2417,
+          33.9971,
+          19.6
+        ]
+      ]
+    },
+    "registered_source_dual_ear_button_plate": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 2156,
+      "volume_mm3": 107.245,
+      "bounds_mm": [
+        [
+          -50.844,
+          -4.2307,
+          17.3
+        ],
+        [
+          -29.9531,
+          3.7693,
+          19.6
+        ]
+      ]
+    },
+    "button_extender_from_aux": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 1886,
+      "volume_mm3": 279.494,
+      "bounds_mm": [
+        [
+          -44.3932,
+          -4.2306,
+          19.9
+        ],
+        [
+          -36.395,
+          3.7686,
+          30.6
+        ]
+      ]
+    },
+    "dual_end_desk_base": {
+      "watertight": true,
+      "is_volume": true,
+      "connected_components": 1,
+      "faces": 2288,
+      "volume_mm3": 60633.325,
+      "bounds_mm": [
+        [
+          80.6,
+          -50.0,
+          -32.7
+        ],
+        [
+          109.5,
+          50.0,
+          52.3
+        ]
+      ]
+    }
+  },
+  "source_registration": {
+    "transform": "top=(x+0.016750, -y-0.227875, 19.600-z) after B0/T0 XY normalization; rigid Rx180",
+    "bottom_top_intersection_mm3": 0.0,
+    "locator_fit_mm": {
+      "rms": 0.005792,
+      "max": 0.009674
+    },
+    "pillar_insert_mm": 3.5,
+    "note": "19.6 mm is this digital assembly height, not a physically measured closed-case thickness."
+  },
+  "source_auxiliary": {
+    "ear_pair_registration": "after top mapping, local additional XY=(-37.555,-0.475); 17.11mm ear pair maps to unique top pair",
+    "orientation": "ear plate inside / centre boss toward front; base Z=17.3, boss top Z=19.6",
+    "top_intersection_mm3": 0.0,
+    "physical_trial_required": "source switch/aux travel is not supplied as a separate electrical model."
+  },
+  "dense_front_grille": {
+    "layout": "8 columns x 13 rows",
+    "hole_count": 104,
+    "nominal_hole_diameter_mm": 2.8,
+    "pitch_mm": 4.8,
+    "centres_x_mm": [
+      28.4,
+      62.0
+    ],
+    "centres_y_mm": [
+      -28.8,
+      28.8
+    ],
+    "nominal_open_area_mm2": 640.382247,
+    "probe_diameter_mm": 2.76,
+    "radial_mesh_tolerance_mm": 0.02,
+    "module_cavity_endpoint_z_mm": 13.0,
+    "all_104_outer_to_front_module_cavity_clear": true,
+    "not_claimed": "This does not claim each grille hole passes through the original bottom frame or corresponds to a rear-cover hole.",
+    "per_hole": [
+      {
+        "i": 0,
+        "j": 0,
+        "x_mm": 28.4,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 1,
+        "x_mm": 28.4,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 2,
+        "x_mm": 28.4,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 3,
+        "x_mm": 28.4,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 4,
+        "x_mm": 28.4,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 5,
+        "x_mm": 28.4,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 6,
+        "x_mm": 28.4,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 7,
+        "x_mm": 28.4,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 8,
+        "x_mm": 28.4,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 9,
+        "x_mm": 28.4,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 10,
+        "x_mm": 28.4,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 11,
+        "x_mm": 28.4,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 0,
+        "j": 12,
+        "x_mm": 28.4,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 0,
+        "x_mm": 33.2,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 1,
+        "x_mm": 33.2,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 2,
+        "x_mm": 33.2,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 3,
+        "x_mm": 33.2,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 4,
+        "x_mm": 33.2,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 5,
+        "x_mm": 33.2,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 6,
+        "x_mm": 33.2,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 7,
+        "x_mm": 33.2,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 8,
+        "x_mm": 33.2,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 9,
+        "x_mm": 33.2,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 10,
+        "x_mm": 33.2,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 11,
+        "x_mm": 33.2,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 1,
+        "j": 12,
+        "x_mm": 33.2,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 0,
+        "x_mm": 38.0,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 1,
+        "x_mm": 38.0,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 2,
+        "x_mm": 38.0,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 3,
+        "x_mm": 38.0,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 4,
+        "x_mm": 38.0,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 5,
+        "x_mm": 38.0,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 6,
+        "x_mm": 38.0,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 7,
+        "x_mm": 38.0,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 8,
+        "x_mm": 38.0,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 9,
+        "x_mm": 38.0,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 10,
+        "x_mm": 38.0,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 11,
+        "x_mm": 38.0,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 2,
+        "j": 12,
+        "x_mm": 38.0,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 0,
+        "x_mm": 42.8,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 1,
+        "x_mm": 42.8,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 2,
+        "x_mm": 42.8,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 3,
+        "x_mm": 42.8,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 4,
+        "x_mm": 42.8,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 5,
+        "x_mm": 42.8,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 6,
+        "x_mm": 42.8,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 7,
+        "x_mm": 42.8,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 8,
+        "x_mm": 42.8,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 9,
+        "x_mm": 42.8,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 10,
+        "x_mm": 42.8,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 11,
+        "x_mm": 42.8,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 3,
+        "j": 12,
+        "x_mm": 42.8,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 0,
+        "x_mm": 47.6,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 1,
+        "x_mm": 47.6,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 2,
+        "x_mm": 47.6,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 3,
+        "x_mm": 47.6,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 4,
+        "x_mm": 47.6,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 5,
+        "x_mm": 47.6,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 6,
+        "x_mm": 47.6,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 7,
+        "x_mm": 47.6,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 8,
+        "x_mm": 47.6,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 9,
+        "x_mm": 47.6,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 10,
+        "x_mm": 47.6,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 11,
+        "x_mm": 47.6,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 4,
+        "j": 12,
+        "x_mm": 47.6,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 0,
+        "x_mm": 52.4,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 1,
+        "x_mm": 52.4,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 2,
+        "x_mm": 52.4,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 3,
+        "x_mm": 52.4,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 4,
+        "x_mm": 52.4,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 5,
+        "x_mm": 52.4,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 6,
+        "x_mm": 52.4,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 7,
+        "x_mm": 52.4,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 8,
+        "x_mm": 52.4,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 9,
+        "x_mm": 52.4,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 10,
+        "x_mm": 52.4,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 11,
+        "x_mm": 52.4,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 5,
+        "j": 12,
+        "x_mm": 52.4,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 0,
+        "x_mm": 57.2,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 1,
+        "x_mm": 57.2,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 2,
+        "x_mm": 57.2,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 3,
+        "x_mm": 57.2,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 4,
+        "x_mm": 57.2,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 5,
+        "x_mm": 57.2,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 6,
+        "x_mm": 57.2,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 7,
+        "x_mm": 57.2,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 8,
+        "x_mm": 57.2,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 9,
+        "x_mm": 57.2,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 10,
+        "x_mm": 57.2,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 11,
+        "x_mm": 57.2,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 6,
+        "j": 12,
+        "x_mm": 57.2,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 0,
+        "x_mm": 62.0,
+        "y_mm": -28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 1,
+        "x_mm": 62.0,
+        "y_mm": -24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 2,
+        "x_mm": 62.0,
+        "y_mm": -19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 3,
+        "x_mm": 62.0,
+        "y_mm": -14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 4,
+        "x_mm": 62.0,
+        "y_mm": -9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 5,
+        "x_mm": 62.0,
+        "y_mm": -4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 6,
+        "x_mm": 62.0,
+        "y_mm": -0.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 7,
+        "x_mm": 62.0,
+        "y_mm": 4.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 8,
+        "x_mm": 62.0,
+        "y_mm": 9.6,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 9,
+        "x_mm": 62.0,
+        "y_mm": 14.4,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 10,
+        "x_mm": 62.0,
+        "y_mm": 19.2,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 11,
+        "x_mm": 62.0,
+        "y_mm": 24.0,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      },
+      {
+        "i": 7,
+        "j": 12,
+        "x_mm": 62.0,
+        "y_mm": 28.8,
+        "probe_diameter_mm": 2.76,
+        "segment_intersections_mm3": {
+          "front_bezel_including_press_feet": 0.0,
+          "source_top_open_module": 0.0,
+          "main_front_module_cavity": 0.0
+        }
+      }
+    ],
+    "press_foot_min_x_edge_clearance_mm": 0.6
+  },
+  "all_required_print_parts_one_piece_watertight": true,
+  "all_9_print_part_pair_intersections_mm3": {
+    "main_chassis__front_bezel": 0.0,
+    "main_chassis__rear_cover_no_sma": 0.0,
+    "main_chassis__left_side_antenna_panel_4x1": 0.0,
+    "main_chassis__right_side_antenna_panel_4x1": 0.0,
+    "main_chassis__registered_source_top_feature_frame": 0.0,
+    "main_chassis__registered_source_dual_ear_button_plate": 0.0,
+    "main_chassis__button_extender_from_aux": 0.0,
+    "main_chassis__dual_end_desk_base": 0.0,
+    "front_bezel__rear_cover_no_sma": 0.0,
+    "front_bezel__left_side_antenna_panel_4x1": 0.0,
+    "front_bezel__right_side_antenna_panel_4x1": 0.0,
+    "front_bezel__registered_source_top_feature_frame": 0.0,
+    "front_bezel__registered_source_dual_ear_button_plate": 0.0,
+    "front_bezel__button_extender_from_aux": 0.0,
+    "front_bezel__dual_end_desk_base": 0.0,
+    "rear_cover_no_sma__left_side_antenna_panel_4x1": 0.0,
+    "rear_cover_no_sma__right_side_antenna_panel_4x1": 0.0,
+    "rear_cover_no_sma__registered_source_top_feature_frame": 0.0,
+    "rear_cover_no_sma__registered_source_dual_ear_button_plate": 0.0,
+    "rear_cover_no_sma__button_extender_from_aux": 0.0,
+    "rear_cover_no_sma__dual_end_desk_base": 0.0,
+    "left_side_antenna_panel_4x1__right_side_antenna_panel_4x1": 0.0,
+    "left_side_antenna_panel_4x1__registered_source_top_feature_frame": 0.0,
+    "left_side_antenna_panel_4x1__registered_source_dual_ear_button_plate": 0.0,
+    "left_side_antenna_panel_4x1__button_extender_from_aux": 0.0,
+    "left_side_antenna_panel_4x1__dual_end_desk_base": 0.0,
+    "right_side_antenna_panel_4x1__registered_source_top_feature_frame": 0.0,
+    "right_side_antenna_panel_4x1__registered_source_dual_ear_button_plate": 0.0,
+    "right_side_antenna_panel_4x1__button_extender_from_aux": 0.0,
+    "right_side_antenna_panel_4x1__dual_end_desk_base": 0.0,
+    "registered_source_top_feature_frame__registered_source_dual_ear_button_plate": 0.0,
+    "registered_source_top_feature_frame__button_extender_from_aux": 0.0,
+    "registered_source_top_feature_frame__dual_end_desk_base": 0.0,
+    "registered_source_dual_ear_button_plate__button_extender_from_aux": 0.0,
+    "registered_source_dual_ear_button_plate__dual_end_desk_base": 0.0,
+    "button_extender_from_aux__dual_end_desk_base": 0.0
+  },
+  "side_sma": {
+    "diameter_mm": 6.6,
+    "axis": "Y",
+    "sides_y_mm": [
+      -45,
+      45
+    ],
+    "x_each_side_mm": [
+      -51,
+      -17,
+      17,
+      51
+    ],
+    "count": 8,
+    "tail_start": "panel inner face Y=±42.6, inward 12mm",
+    "tail_z_mm": -3.5,
+    "assumption": {
+      "shank_diameter_mm": 6.5,
+      "tail_mm": 12,
+      "washer": "round Ø10",
+      "nut": "8mm AF"
+    },
+    "geometry_checks": [
+      {
+        "side_y": -45,
+        "x": -51.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      },
+      {
+        "side_y": -45,
+        "x": -17.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      },
+      {
+        "side_y": -45,
+        "x": 17.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      },
+      {
+        "side_y": -45,
+        "x": 51.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      },
+      {
+        "side_y": 45,
+        "x": -51.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      },
+      {
+        "side_y": 45,
+        "x": -17.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      },
+      {
+        "side_y": 45,
+        "x": 17.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      },
+      {
+        "side_y": 45,
+        "x": 51.0,
+        "panel": 0.0,
+        "main_window": 0.0,
+        "source_bottom": 0.0,
+        "source_top": 0.0,
+        "main_tail": 0.0,
+        "washer_main": 0.0,
+        "nut_main": 0.0
+      }
+    ]
+  },
+  "side_m3_traps": [
+    {
+      "side_y": -45,
+      "x": -61.0,
+      "nut_intersection_mm3": 0.0,
+      "load_sweep_samples": 21,
+      "load_sweep_max_mm3": 0.0,
+      "rotation30_block_mm3": 0.059134
+    },
+    {
+      "side_y": -45,
+      "x": 61.0,
+      "nut_intersection_mm3": 0.0,
+      "load_sweep_samples": 21,
+      "load_sweep_max_mm3": 0.0,
+      "rotation30_block_mm3": 0.059134
+    },
+    {
+      "side_y": 45,
+      "x": -61.0,
+      "nut_intersection_mm3": 0.0,
+      "load_sweep_samples": 21,
+      "load_sweep_max_mm3": 0.0,
+      "rotation30_block_mm3": 0.032482
+    },
+    {
+      "side_y": 45,
+      "x": 61.0,
+      "nut_intersection_mm3": 0.0,
+      "load_sweep_samples": 21,
+      "load_sweep_max_mm3": 0.0,
+      "rotation30_block_mm3": 0.032482
+    }
+  ],
+  "front_press_feet": {
+    "static_mm3": 0.0,
+    "top_plus_0_30_mm3": 0.0,
+    "top_plus_0_40_block_mm3": 14.297561,
+    "seated_front_minus_0_10_all_static_mm3": {
+      "main_chassis": 0.0,
+      "source_top": 0.0,
+      "source_aux": 0.0,
+      "button": 0.0,
+      "rear": 0.0,
+      "left": 0.0,
+      "right": 0.0,
+      "base": 0.0
+    },
+    "seated_top_plus_0_20_mm3": 5.6e-05,
+    "seated_top_plus_0_21_block_mm3": 1.429752,
+    "reference_step": "front_bezel_reference.step intentionally lacks mesh-added print feet"
+  },
+  "top_removal_sweep": {
+    "axis": "+Z",
+    "range_mm": [
+      0,
+      13
+    ],
+    "increment_mm": 0.25,
+    "maximum_intersection_mm3": 0.0,
+    "complete_clearance": "top lower bound 14.4 + 13 = 27.4mm exceeds chassis upper bound 26.9mm"
+  },
+  "button_chain_v5": {
+    "axis_xy_mm": [
+      -40.395,
+      -0.231
+    ],
+    "release_gap_mm": 0.3,
+    "driver_diameter_mm": 6.2,
+    "bezel_guide_diameter_mm": 6.5,
+    "continuous_contact_stem_diameter_mm": 5.3,
+    "internal_capture_flange_diameter_mm": 8.0,
+    "inner_flange_to_bezel_release_mm": 0.1,
+    "exterior_button_install_sweep_mm": [
+      10,
+      0
+    ],
+    "exterior_button_install_samples": 41,
+    "exterior_button_install_max_mm3": 0.0,
+    "bezel_descent_after_button_sweep_mm": [
+      10,
+      -0.1
+    ],
+    "bezel_descent_samples": 42,
+    "bezel_descent_max_mm3": 0.0,
+    "pull_plus_0_10_front_mm3": 0.0,
+    "pull_plus_0_11_front_block_mm3": 0.170726,
+    "front_seated_minus_0_10_mm3": 0.0,
+    "initial_source_contact_down_mm": 0.3,
+    "requested_working_travel_after_contact_mm": 0.5,
+    "press_to_down_mm": 0.8,
+    "press_samples": [
+      {
+        "downward_mm": 0.0,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.0,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.05,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.0,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.1,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.0,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.15,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.0,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.2,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.0,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.25,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.0,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.3,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.0,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.35,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.05,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.4,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.1,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.45,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.15,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.5,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.2,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.55,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.25,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.6,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.3,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.65,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.35,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.7,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.4,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.75,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.45,
+        "button_to_moving_source_slider_mm3": 0.0
+      },
+      {
+        "downward_mm": 0.8,
+        "non_drive_intersections_mm3": {
+          "front_bezel": 0.0,
+          "registered_source_top_feature_frame": 0.0,
+          "main_chassis": 0.0,
+          "rear_cover_no_sma": 0.0,
+          "left_side_antenna_panel_4x1": 0.0,
+          "right_side_antenna_panel_4x1": 0.0,
+          "dual_end_desk_base": 0.0
+        },
+        "source_slider_down_mm": 0.5,
+        "button_to_moving_source_slider_mm3": 0.0
+      }
+    ],
+    "source_aux_geometric_minus_0_50_to_top_mm3": 0.0,
+    "source_aux_upward_retention": {
+      "source_top_block_plus_0_15_mm3": 3.405564,
+      "source_ear_post_insert_mm": 0.6,
+      "minimum_post_insert_before_source_top_stop_mm": 0.45,
+      "note": "No redundant thin button cup is used. Actual source-top geometry blocks the source slider before its ear holes can leave the posts."
+    },
+    "seated_front_minus_0_10_source_top_plus_0_20_full_press": {
+      "button_front": 0.0,
+      "button_top": 0.0,
+      "button_main": 0.0,
+      "button_aux": 0.0,
+      "aux_top": 0.0,
+      "aux_front": 0.0,
+      "top_front": 5.6e-05
+    },
+    "v4_failure_regression": {
+      "v4_outer_cap_diameter_mm": 9.0,
+      "v4_cap_bottom_z_mm": 29.6,
+      "v4_bezel_top_z_mm": 29.6,
+      "v4_down_minus_0_01_front_intersection_mm3": 0.304,
+      "v4_down_minus_0_10_front_intersection_mm3": 3.0416,
+      "v4_down_minus_0_30_front_intersection_mm3": 9.1248,
+      "purpose": "The v4 geometry must fail this physical-cap regression; v5 avoids that cap/bezel collision."
+    },
+    "note": "07/source switch hardware was not supplied. The .50mm geometric clearance is not proof of switch actuation force, electrical actuation, return force, or physical print fit."
+  },
+  "rear_cover_m3_closed_edge_land_mm": 2.3,
+  "side_panel_m3_end_edge_land_mm": 2.3,
+  "limits": [
+    "No PCB, battery, USB plug, actual SMA or cable solid was supplied. Thermal, lithium safety, RF, cable bend, real press force/travel and physical fit remain unverified."
+  ],
+  "dual_end_base": {
+    "plus_x": {
+      "transform": "native +X lower-end pose",
+      "base_bounds_mm": [
+        [
+          80.6,
+          -50.0,
+          -32.7
+        ],
+        [
+          109.5,
+          50.0,
+          52.3
+        ]
+      ],
+      "intersections_mm3": {
+        "main_chassis": 0.0,
+        "front_bezel": 0.0,
+        "rear_cover_no_sma": 0.0,
+        "left_side_antenna_panel_4x1": 0.0,
+        "right_side_antenna_panel_4x1": 0.0,
+        "registered_source_top_feature_frame": 0.0
+      },
+      "m3_clamp_chain": [
+        {
+          "seat_y_mm": -25,
+          "z_mm": -4.0,
+          "m3x16_proxy": {
+            "head_diameter_mm": 5.5,
+            "head_length_mm": 3.0,
+            "stem_diameter_mm": 3.0,
+            "stem_length_mm": 16.0
+          },
+          "head_main_mm3": 0.0,
+          "stem_main_mm3": 0.0,
+          "stem_base_mm3": 0.0,
+          "head_outward_0_10_shoulder_block_mm3": 0.720636,
+          "head_arrival_samples": 63,
+          "head_arrival_max_mm3": 0.0,
+          "stem_nut_thread_engagement_proxy_mm3": 16.77143
+        },
+        {
+          "seat_y_mm": 25,
+          "z_mm": -4.0,
+          "m3x16_proxy": {
+            "head_diameter_mm": 5.5,
+            "head_length_mm": 3.0,
+            "stem_diameter_mm": 3.0,
+            "stem_length_mm": 16.0
+          },
+          "head_main_mm3": 0.0,
+          "stem_main_mm3": 0.0,
+          "stem_base_mm3": 0.0,
+          "head_outward_0_10_shoulder_block_mm3": 0.720636,
+          "head_arrival_samples": 63,
+          "head_arrival_max_mm3": 0.0,
+          "stem_nut_thread_engagement_proxy_mm3": 16.77143
+        }
+      ],
+      "base_captive_m3_nut_loading": [
+        {
+          "seat_y_mm": -25,
+          "z_mm": -4.0,
+          "nut_af_mm": 5.5,
+          "nut_thickness_mm": 2.4,
+          "load_axis": "Y",
+          "load_y_mm": [
+            43,
+            25
+          ],
+          "samples": 73,
+          "sweep_max_mm3": 0.0,
+          "rotation30_block_mm3": 0.882064
+        },
+        {
+          "seat_y_mm": 25,
+          "z_mm": -4.0,
+          "nut_af_mm": 5.5,
+          "nut_thickness_mm": 2.4,
+          "load_axis": "Y",
+          "load_y_mm": [
+            43,
+            25
+          ],
+          "samples": 73,
+          "sweep_max_mm3": 0.0,
+          "rotation30_block_mm3": 0.882064
+        }
+      ],
+      "central_cable_channel_mm": [
+        28,
+        25,
+        10
+      ],
+      "source_minus_x_port_cable_path": null,
+      "body_projection_inside_foot_yz": true,
+      "antenna_occupancy_assumption": [
+        {
+          "side_y": -45,
+          "x": -51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": -45,
+          "x": -17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": -45,
+          "x": 17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": -45,
+          "x": 51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": -51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": -17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": 17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": 51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        }
+      ]
+    },
+    "minus_x": {
+      "transform": "rotate Z=180 for −X lower-end pose",
+      "base_bounds_mm": [
+        [
+          -109.5,
+          -50.0,
+          -32.7
+        ],
+        [
+          -80.6,
+          50.0,
+          52.3
+        ]
+      ],
+      "intersections_mm3": {
+        "main_chassis": 0.0,
+        "front_bezel": 0.0,
+        "rear_cover_no_sma": 0.0,
+        "left_side_antenna_panel_4x1": 0.0,
+        "right_side_antenna_panel_4x1": 0.0,
+        "registered_source_top_feature_frame": 0.0
+      },
+      "m3_clamp_chain": [
+        {
+          "seat_y_mm": 25,
+          "z_mm": -4.0,
+          "m3x16_proxy": {
+            "head_diameter_mm": 5.5,
+            "head_length_mm": 3.0,
+            "stem_diameter_mm": 3.0,
+            "stem_length_mm": 16.0
+          },
+          "head_main_mm3": 0.0,
+          "stem_main_mm3": 0.0,
+          "stem_base_mm3": 0.0,
+          "head_outward_0_10_shoulder_block_mm3": 0.720636,
+          "head_arrival_samples": 63,
+          "head_arrival_max_mm3": 0.0,
+          "stem_nut_thread_engagement_proxy_mm3": 16.77143
+        },
+        {
+          "seat_y_mm": -25,
+          "z_mm": -4.0,
+          "m3x16_proxy": {
+            "head_diameter_mm": 5.5,
+            "head_length_mm": 3.0,
+            "stem_diameter_mm": 3.0,
+            "stem_length_mm": 16.0
+          },
+          "head_main_mm3": 0.0,
+          "stem_main_mm3": 0.0,
+          "stem_base_mm3": 0.0,
+          "head_outward_0_10_shoulder_block_mm3": 0.720636,
+          "head_arrival_samples": 63,
+          "head_arrival_max_mm3": 0.0,
+          "stem_nut_thread_engagement_proxy_mm3": 16.77143
+        }
+      ],
+      "base_captive_m3_nut_loading": [
+        {
+          "seat_y_mm": 25,
+          "z_mm": -4.0,
+          "nut_af_mm": 5.5,
+          "nut_thickness_mm": 2.4,
+          "load_axis": "Y",
+          "load_y_mm": [
+            -43,
+            -25
+          ],
+          "samples": 73,
+          "sweep_max_mm3": 0.0,
+          "rotation30_block_mm3": 0.882064
+        },
+        {
+          "seat_y_mm": -25,
+          "z_mm": -4.0,
+          "nut_af_mm": 5.5,
+          "nut_thickness_mm": 2.4,
+          "load_axis": "Y",
+          "load_y_mm": [
+            -43,
+            -25
+          ],
+          "samples": 73,
+          "sweep_max_mm3": 0.0,
+          "rotation30_block_mm3": 0.882064
+        }
+      ],
+      "central_cable_channel_mm": [
+        28,
+        25,
+        10
+      ],
+      "source_minus_x_port_cable_path": {
+        "prism_mm": [
+          30,
+          8,
+          3
+        ],
+        "main_chassis_mm3": 0.0,
+        "base_mm3": 0.0
+      },
+      "body_projection_inside_foot_yz": true,
+      "antenna_occupancy_assumption": [
+        {
+          "side_y": -45,
+          "x": -51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": -45,
+          "x": -17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": -45,
+          "x": 17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": -45,
+          "x": 51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            -0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": -51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": -17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": 17.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        },
+        {
+          "side_y": 45,
+          "x": 51.0,
+          "diameter_mm": 8,
+          "length_mm": 100,
+          "direction": [
+            -0.70711,
+            0.70711,
+            0.0
+          ],
+          "intersections_mm3": {
+            "base": 0.0,
+            "main_chassis": 0.0,
+            "front_bezel": 0.0,
+            "rear_cover_no_sma": 0.0,
+            "left_side_antenna_panel_4x1": 0.0,
+            "right_side_antenna_panel_4x1": 0.0,
+            "registered_source_top_feature_frame": 0.0
+          }
+        }
+      ]
+    }
+  }
+}

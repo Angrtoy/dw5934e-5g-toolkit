@@ -1,0 +1,108 @@
+#!/bin/sh
+
+# Bounded AP-HLOS DMS Online controller for the current AP070 vendor ABI.
+# The audited client itself permits SET Online only after two stable 0x05
+# (ShuttingDown) reads.  No DMS Reset or modem reboot exists in this flow.
+
+BIN=/data/dw_dms
+LAST=/data/dw_dms.last
+LOCK=/tmp/dw_dms.lock
+SUCCESS=/tmp/dw_dms.success
+MAX_READY_POLLS=24
+MAX_ATTEMPTS=8
+
+DMS_SHA=60a8592b6310b03230c45f205ee901add65b16591d16a20001763d120174cc61
+FOX_SHA=c498823e0aae6eb1d03ef52d18084f24b911a136e08e371723813b6675111f55
+MBIMD_SHA=e962d951047964fd4c42e7dd6e22220cd47ccff76db4044abd9fbe2a54d047a7
+CCI_SHA=d568f6b08e984925e3cdbf90e5d3f07e2100c0716784ed62594acb94c9ada83f
+SVC_SHA=4bd9321503991a444286ec5f11886c9db6b3f1c2e2ba7a54911d32ddd9803eb3
+
+file_sha_is() {
+    path=$1
+    expected=$2
+    actual="$(sha256sum "$path" 2>/dev/null | cut -d' ' -f1)"
+    [ "$actual" = "$expected" ]
+}
+
+rfs_ok() {
+    [ -d "$1" ] &&
+    [ ! -L "$1" ] &&
+    [ "$(stat -c '%a:%U:%G' "$1")" = '777:system:system' ] &&
+    [ "$(ls -dZ "$1" | awk '{print $1}')" = 'u:r:tftp_server.datafile' ]
+}
+
+log_state() {
+    tmp="${LAST}.tmp.$$"
+    printf '%s\n' "$1" > "$tmp" && mv -f "$tmp" "$LAST"
+}
+
+mkdir "$LOCK" 2>/dev/null || exit 0
+cleanup() {
+    rmdir "$LOCK" 2>/dev/null || true
+}
+trap cleanup EXIT HUP INT TERM
+rm -f "$SUCCESS"
+
+file_sha_is "$BIN" "$DMS_SHA" || { log_state 'state=hash_rejected object=dms'; exit 201; }
+file_sha_is /usr/bin/fox_ap_qmi_svc "$FOX_SHA" || { log_state 'state=hash_rejected object=fox'; exit 202; }
+file_sha_is /usr/bin/mbimd "$MBIMD_SHA" || { log_state 'state=hash_rejected object=mbimd'; exit 203; }
+file_sha_is /usr/lib/libqmi_cci.so.1.0.0 "$CCI_SHA" || { log_state 'state=hash_rejected object=cci'; exit 204; }
+file_sha_is /usr/lib/libqmiservices.so "$SVC_SHA" || { log_state 'state=hash_rejected object=services'; exit 205; }
+
+ready=0
+poll=1
+last_tftp_pid=
+while [ "$poll" -le "$MAX_READY_POLLS" ]; do
+    tftp_pid="$(pidof tftp_server 2>/dev/null || true)"
+    if [ "$(cat /sys/class/remoteproc/remoteproc0/state 2>/dev/null)" = running ] &&
+       [ -n "$tftp_pid" ] && [ "$tftp_pid" = "$last_tftp_pid" ] &&
+       pidof mbimd >/dev/null 2>&1 &&
+       pidof fox_ap_qmi_svc >/dev/null 2>&1 &&
+       rfs_ok /data/persist/rfs/shared &&
+       rfs_ok /data/persist/hlos_rfs/shared; then
+        ready=1
+        break
+    fi
+    last_tftp_pid=$tftp_pid
+    log_state "state=waiting_services poll=$poll"
+    sleep 5
+    poll=$((poll + 1))
+done
+
+if [ "$ready" -ne 1 ]; then
+    log_state "state=services_not_ready polls=$MAX_READY_POLLS"
+    exit 70
+fi
+
+attempt=1
+while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
+    "$BIN"
+    rc=$?
+    case "$rc" in
+        0|10)
+            tmp="${SUCCESS}.tmp.$$"
+            printf 'state=online attempt=%s rc=%s\n' "$attempt" "$rc" > "$tmp" && mv -f "$tmp" "$SUCCESS"
+            log_state "state=online attempt=$attempt rc=$rc"
+            exit 0
+            ;;
+        92|93|94|96)
+            # These codes occur before SET and are the only retryable results.
+            log_state "state=safe_retry attempt=$attempt rc=$rc"
+            ;;
+        97|98)
+            # SET may already have been attempted.  Never issue another SET.
+            log_state "state=terminal_set_attempted attempt=$attempt rc=$rc"
+            exit 72
+            ;;
+        *)
+            log_state "state=terminal_rejected attempt=$attempt rc=$rc"
+            exit 73
+            ;;
+    esac
+    [ "$attempt" -ge "$MAX_ATTEMPTS" ] && break
+    sleep 10
+    attempt=$((attempt + 1))
+done
+
+log_state "state=safe_retries_exhausted attempts=$MAX_ATTEMPTS"
+exit 71

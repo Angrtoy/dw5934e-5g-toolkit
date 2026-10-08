@@ -1,0 +1,528 @@
+{
+  "parameters": {
+    "revision": "MF650_2491007_rounded_side8_v5",
+    "units": "mm",
+    "coordinate": "X long / Y wide / Z thick; front is +Z",
+    "source_bottom_bbox_mm": [
+      149.5,
+      72.0,
+      17.9
+    ],
+    "source_top_bbox_mm": [
+      146.45,
+      68.45,
+      5.2
+    ],
+    "source_assembled_z": [
+      0.0,
+      19.6
+    ],
+    "outer_mm": [
+      160.0,
+      90.0,
+      39.6
+    ],
+    "outer_z": [
+      -10.0,
+      29.6
+    ],
+    "outer_corner_radius": 9.0,
+    "wall_mm": 2.5,
+    "sma_diameter": 6.6,
+    "sma_panel_thickness": 2.4,
+    "sma_x": [
+      -51.0,
+      -17.0,
+      17.0,
+      51.0
+    ],
+    "sma_sides_y": [
+      -45.0,
+      45.0
+    ],
+    "front_hole_diameter": 2.8,
+    "front_hole_pitch": 4.8,
+    "sma_assumption": {
+      "thread": "1/4-36 UNS (vendor statement)",
+      "shank_diameter_mm": 6.5,
+      "tail_length_mm": 12.0,
+      "washer_diameter_mm": 10.0,
+      "nut_af_mm": 8.0
+    }
+  },
+  "front_grille_centers_xy": [
+    [
+      28.4,
+      -28.8
+    ],
+    [
+      28.4,
+      -24.0
+    ],
+    [
+      28.4,
+      -19.2
+    ],
+    [
+      28.4,
+      -14.4
+    ],
+    [
+      28.4,
+      -9.6
+    ],
+    [
+      28.4,
+      -4.8
+    ],
+    [
+      28.4,
+      -0.0
+    ],
+    [
+      28.4,
+      4.8
+    ],
+    [
+      28.4,
+      9.6
+    ],
+    [
+      28.4,
+      14.4
+    ],
+    [
+      28.4,
+      19.2
+    ],
+    [
+      28.4,
+      24.0
+    ],
+    [
+      28.4,
+      28.8
+    ],
+    [
+      33.2,
+      -28.8
+    ],
+    [
+      33.2,
+      -24.0
+    ],
+    [
+      33.2,
+      -19.2
+    ],
+    [
+      33.2,
+      -14.4
+    ],
+    [
+      33.2,
+      -9.6
+    ],
+    [
+      33.2,
+      -4.8
+    ],
+    [
+      33.2,
+      -0.0
+    ],
+    [
+      33.2,
+      4.8
+    ],
+    [
+      33.2,
+      9.6
+    ],
+    [
+      33.2,
+      14.4
+    ],
+    [
+      33.2,
+      19.2
+    ],
+    [
+      33.2,
+      24.0
+    ],
+    [
+      33.2,
+      28.8
+    ],
+    [
+      38.0,
+      -28.8
+    ],
+    [
+      38.0,
+      -24.0
+    ],
+    [
+      38.0,
+      -19.2
+    ],
+    [
+      38.0,
+      -14.4
+    ],
+    [
+      38.0,
+      -9.6
+    ],
+    [
+      38.0,
+      -4.8
+    ],
+    [
+      38.0,
+      -0.0
+    ],
+    [
+      38.0,
+      4.8
+    ],
+    [
+      38.0,
+      9.6
+    ],
+    [
+      38.0,
+      14.4
+    ],
+    [
+      38.0,
+      19.2
+    ],
+    [
+      38.0,
+      24.0
+    ],
+    [
+      38.0,
+      28.8
+    ],
+    [
+      42.8,
+      -28.8
+    ],
+    [
+      42.8,
+      -24.0
+    ],
+    [
+      42.8,
+      -19.2
+    ],
+    [
+      42.8,
+      -14.4
+    ],
+    [
+      42.8,
+      -9.6
+    ],
+    [
+      42.8,
+      -4.8
+    ],
+    [
+      42.8,
+      -0.0
+    ],
+    [
+      42.8,
+      4.8
+    ],
+    [
+      42.8,
+      9.6
+    ],
+    [
+      42.8,
+      14.4
+    ],
+    [
+      42.8,
+      19.2
+    ],
+    [
+      42.8,
+      24.0
+    ],
+    [
+      42.8,
+      28.8
+    ],
+    [
+      47.6,
+      -28.8
+    ],
+    [
+      47.6,
+      -24.0
+    ],
+    [
+      47.6,
+      -19.2
+    ],
+    [
+      47.6,
+      -14.4
+    ],
+    [
+      47.6,
+      -9.6
+    ],
+    [
+      47.6,
+      -4.8
+    ],
+    [
+      47.6,
+      -0.0
+    ],
+    [
+      47.6,
+      4.8
+    ],
+    [
+      47.6,
+      9.6
+    ],
+    [
+      47.6,
+      14.4
+    ],
+    [
+      47.6,
+      19.2
+    ],
+    [
+      47.6,
+      24.0
+    ],
+    [
+      47.6,
+      28.8
+    ],
+    [
+      52.4,
+      -28.8
+    ],
+    [
+      52.4,
+      -24.0
+    ],
+    [
+      52.4,
+      -19.2
+    ],
+    [
+      52.4,
+      -14.4
+    ],
+    [
+      52.4,
+      -9.6
+    ],
+    [
+      52.4,
+      -4.8
+    ],
+    [
+      52.4,
+      -0.0
+    ],
+    [
+      52.4,
+      4.8
+    ],
+    [
+      52.4,
+      9.6
+    ],
+    [
+      52.4,
+      14.4
+    ],
+    [
+      52.4,
+      19.2
+    ],
+    [
+      52.4,
+      24.0
+    ],
+    [
+      52.4,
+      28.8
+    ],
+    [
+      57.2,
+      -28.8
+    ],
+    [
+      57.2,
+      -24.0
+    ],
+    [
+      57.2,
+      -19.2
+    ],
+    [
+      57.2,
+      -14.4
+    ],
+    [
+      57.2,
+      -9.6
+    ],
+    [
+      57.2,
+      -4.8
+    ],
+    [
+      57.2,
+      -0.0
+    ],
+    [
+      57.2,
+      4.8
+    ],
+    [
+      57.2,
+      9.6
+    ],
+    [
+      57.2,
+      14.4
+    ],
+    [
+      57.2,
+      19.2
+    ],
+    [
+      57.2,
+      24.0
+    ],
+    [
+      57.2,
+      28.8
+    ],
+    [
+      62.0,
+      -28.8
+    ],
+    [
+      62.0,
+      -24.0
+    ],
+    [
+      62.0,
+      -19.2
+    ],
+    [
+      62.0,
+      -14.4
+    ],
+    [
+      62.0,
+      -9.6
+    ],
+    [
+      62.0,
+      -4.8
+    ],
+    [
+      62.0,
+      -0.0
+    ],
+    [
+      62.0,
+      4.8
+    ],
+    [
+      62.0,
+      9.6
+    ],
+    [
+      62.0,
+      14.4
+    ],
+    [
+      62.0,
+      19.2
+    ],
+    [
+      62.0,
+      24.0
+    ],
+    [
+      62.0,
+      28.8
+    ]
+  ],
+  "front_grille": {
+    "revision": "v4 dense grille",
+    "layout": [
+      8,
+      13
+    ],
+    "hole_count": 104,
+    "diameter_mm": 2.8,
+    "pitch_mm": 4.8,
+    "centres_x_mm": [
+      28.4,
+      62.0
+    ],
+    "centres_y_mm": [
+      -28.8,
+      28.8
+    ],
+    "nominal_open_area_mm2": 640.382247
+  },
+  "button_extender_v5": {
+    "axis_xy_mm": [
+      -40.395,
+      -0.231
+    ],
+    "outer_driver_diameter_mm": 6.2,
+    "guide_diameter_mm": 6.5,
+    "inner_capture_flange_diameter_mm": 8.0,
+    "source_boss_contact_diameter_mm": 5.3,
+    "release_to_source_boss_mm": 0.3,
+    "note": "With the front bezel removed, install from the front/exterior; then lower the bezel over the Ø6.2 driver. The continuous solid contact/stem removes the former thin cup; source-top geometry is the verified source-slider upward stop."
+  },
+  "source_registration": {
+    "bottom_transform": "subtract obj_1 perimeter-plane centre B0 from XY; preserve Z",
+    "top_transform": "after T0 XY normalization: (x+0.016750, -y-0.227875, 19.600-z); rigid Rx180; locator pillars face original-bottom receivers",
+    "aux_transform": "obj_3 uses the top XY correction plus local (-37.555,-0.475); its ear plate remains inside and boss faces front; Z=17.3..19.6",
+    "geometric_basis": "matching long/short rounded perimeter planes centre source XY; actual locator-pillar fit requires Rx180; this is a digital 19.6mm assembly height, not a physical closed-case measurement."
+  },
+  "functional_openings": {
+    "bottom_service_cut_mm": [
+      120,
+      48,
+      9
+    ],
+    "top_module_cut_mm": [
+      44,
+      62,
+      8
+    ],
+    "air_path": "front round grille -> opened +X source-top module region -> original cavity -> bottom 120x48 service cut -> rear vents"
+  },
+  "hardware_assumptions": {
+    "thread": "1/4-36 UNS (vendor statement)",
+    "shank_diameter_mm": 6.5,
+    "tail_length_mm": 12.0,
+    "washer_diameter_mm": 10.0,
+    "nut_af_mm": 8.0
+  }
+}

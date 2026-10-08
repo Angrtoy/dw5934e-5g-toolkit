@@ -1,0 +1,51 @@
+#!/bin/sh /etc/rc.common
+
+START=86
+STOP=86
+
+BIN=/data/dw_dms
+CTL=/data/dw_dms_ctl
+LAST=/data/dw_dms.last
+LOCK=/tmp/dw_dms.lock
+SUCCESS=/tmp/dw_dms.success
+
+DMS_SHA=60a8592b6310b03230c45f205ee901add65b16591d16a20001763d120174cc61
+CTL_SHA=b059e447fe8013e8a4da31cbdba02ceb9172bd821e3aa3766f7d9798d599f6bc
+FOX_SHA=c498823e0aae6eb1d03ef52d18084f24b911a136e08e371723813b6675111f55
+MBIMD_SHA=e962d951047964fd4c42e7dd6e22220cd47ccff76db4044abd9fbe2a54d047a7
+CCI_SHA=d568f6b08e984925e3cdbf90e5d3f07e2100c0716784ed62594acb94c9ada83f
+SVC_SHA=4bd9321503991a444286ec5f11886c9db6b3f1c2e2ba7a54911d32ddd9803eb3
+
+file_sha_is() {
+    path=$1
+    expected=$2
+    actual="$(sha256sum "$path" 2>/dev/null | cut -d' ' -f1)"
+    [ "$actual" = "$expected" ]
+}
+
+verify_rfs_dir() {
+    [ -d "$1" ] &&
+    [ ! -L "$1" ] &&
+    [ "$(stat -c '%a:%U:%G' "$1")" = '777:system:system' ] &&
+    [ "$(ls -dZ "$1" | awk '{print $1}')" = 'u:r:tftp_server.datafile' ]
+}
+
+start() {
+    file_sha_is "$BIN" "$DMS_SHA" || return 201
+    file_sha_is "$CTL" "$CTL_SHA" || return 202
+    file_sha_is /usr/bin/fox_ap_qmi_svc "$FOX_SHA" || return 203
+    file_sha_is /usr/bin/mbimd "$MBIMD_SHA" || return 204
+    file_sha_is /usr/lib/libqmi_cci.so.1.0.0 "$CCI_SHA" || return 205
+    file_sha_is /usr/lib/libqmiservices.so "$SVC_SHA" || return 206
+    verify_rfs_dir /data/persist/rfs/shared || return 207
+    verify_rfs_dir /data/persist/hlos_rfs/shared || return 208
+
+    rm -f "$SUCCESS"
+    [ -d "$LOCK" ] && return 0
+    "$CTL" >/dev/null 2>&1 &
+    return 0
+}
+
+stop() {
+    return 0
+}

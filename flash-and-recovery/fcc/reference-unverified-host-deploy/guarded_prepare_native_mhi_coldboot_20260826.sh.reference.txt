@@ -1,0 +1,231 @@
+#!/bin/false
+exit 126
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# Prepare Ubuntu's native MHI/MBIM stack for the next true cold boot.  The live
+# vendor driver is deliberately left bound; hot handoff is a proven failure
+# mode.  FCC persistence remains entirely inside the module.
+
+TOKEN="CURRENT-E11D-PREPARE-NATIVE-COLDBOOT-20260826"
+ALLOWED_ROOT=<REDACTED-PRIVATE-PATH>
+LOCK=/run/lock/e11d_native_mhi_coldboot_prepare_20260826.lock
+PCI=/sys/bus/pci/devices/0000:07:00.0
+UPSTREAM_MODULES=/etc/modules-load.d/dw5934e-upstream-mhi.conf
+UPSTREAM_POLICY=/etc/modprobe.d/dw5934e-upstream-only.conf
+VENDOR_MODULES=/etc/modules-load.d/zz-e11d-vendor-mhi.conf
+VENDOR_POLICY=/etc/modprobe.d/zz-dw5934e-e11d-vendor-first.conf
+VENDOR_UDEV=/etc/udev/rules.d/10-dw5934e-e11d-vendor-first.rules
+INITRAMFS_MODULES=/etc/initramfs-tools/modules
+VENDOR_BIND=dw5934e-e11d-vendor-bind.service
+VENDOR_UNBIND=dw5934e-e11d-vendor-shutdown-unbind.service
+QMI_HOLD=dw5934e-qmi-online-hold.service
+KERNELS=(7.0.0-29-generic 7.0.0-30-generic)
+
+UPSTREAM_MODULES_SHA=11cc0c9cf5e5e64fc62d6553d019f640b769b8b1db5e9a9618fe9826d3be79d9
+VENDOR_MODULES_SHA=1a1f15e9a972586e6fc7a1bdc12d007c07cd694497570c76a5c348c6fb584a24
+VENDOR_POLICY_SHA=fa9b16a59cdda4f461468e7b6dfc761bb06b78c973c71fc1fcc8308be106be60
+VENDOR_UDEV_SHA=8e4cde130ac5f41c9a9ede48ae347a4c73dec9ccaee1c39250016546997b760d
+INITRAMFS_MODULES_SHA=e0cf1c1e6287e0f61b2f12ec1374d2542ac16d832f5af9b8bf50b1627d8bd1d8
+UPSTREAM_POLICY_SHA=b24143d4abf8aab9158f749e71a2774f089c8fb3050e278a06592c44fcdd7ed2
+
+if [[ ${1:-} != --execute-token || ${2:-} != "$TOKEN" || ${3:-} != --output-dir || -z ${4:-} ]]; then
+    echo "guarded arguments required" >&2
+    exit 64
+fi
+OUT=$(realpath -m -- "$4")
+case "$OUT" in
+    "$ALLOWED_ROOT"/*) ;;
+    *) echo "output directory outside guarded root" >&2; exit 64 ;;
+esac
+[[ $OUT != "$ALLOWED_ROOT" && ! -e $OUT ]]
+[[ $EUID -eq 0 ]]
+mkdir -p -- "$OUT/backup"
+exec 9>"$LOCK"
+flock -n 9
+exec > >(tee -a "$OUT/transaction.log") 2>&1
+
+echo "START=$(date -Ins)"
+echo "LIVE_HOT_HANDOFF=false"
+echo "UBUNTU_FCC_UNLOCK_SERVICE_REQUIRED=false"
+
+[[ $(cat "$PCI/vendor") == 0x105b ]]
+[[ $(cat "$PCI/device") == 0xe11d ]]
+[[ $(readlink -f "$PCI/driver") == /sys/bus/pci/drivers/mhi_q ]]
+[[ -c /dev/mhi_QMI0 && -c /dev/mhi_ADB ]]
+[[ -z $(fuser /dev/mhi_QMI0 2>/dev/null || true) ]]
+[[ $(sha256sum "$UPSTREAM_MODULES" | awk '{print $1}') == "$UPSTREAM_MODULES_SHA" ]]
+[[ ! -e $UPSTREAM_POLICY && ! -L $UPSTREAM_POLICY ]]
+[[ $(sha256sum "$VENDOR_MODULES" | awk '{print $1}') == "$VENDOR_MODULES_SHA" ]]
+[[ $(sha256sum "$VENDOR_POLICY" | awk '{print $1}') == "$VENDOR_POLICY_SHA" ]]
+[[ $(sha256sum "$VENDOR_UDEV" | awk '{print $1}') == "$VENDOR_UDEV_SHA" ]]
+[[ $(sha256sum "$INITRAMFS_MODULES" | awk '{print $1}') == "$INITRAMFS_MODULES_SHA" ]]
+[[ ! -e $UPSTREAM_POLICY.codex-20260826.tmp ]]
+[[ ! -e $INITRAMFS_MODULES.codex-20260826.tmp ]]
+[[ $(systemctl is-enabled "$VENDOR_BIND") == enabled ]]
+[[ $(systemctl is-enabled "$VENDOR_UNBIND") == enabled ]]
+[[ $(systemctl is-enabled ModemManager.service) == enabled ]]
+[[ $(systemctl is-enabled NetworkManager.service) == enabled ]]
+[[ ! -e /etc/ModemManager/fcc-unlock.d/105b:e11d ]]
+
+for kernel in "${KERNELS[@]}"; do
+    [[ -e /boot/initrd.img-$kernel ]]
+    for module in mhi_pci_generic mhi_wwan_ctrl mhi_wwan_mbim; do
+        modinfo -k "$kernel" "$module" >/dev/null
+    done
+done
+
+profile=$(nmcli -g connection.autoconnect,connection.autoconnect-retries,gsm.apn,gsm.home-only connection show unicom-5g)
+[[ $profile == $'yes\n0\n3gnet\nno' ]]
+
+python3 - <<'PY'
+import sys
+sys.path.insert(0,"<REDACTED-PRIVATE-PATH>")
+import guarded_current_module_fcc_action3_20260826 as g
+q=g.raw.Qmi(g.DEVICE); d=f=None
+try:
+    d=g.allocate(q,g.SERVICE_DMS); f=g.allocate(q,g.SERVICE_FOX)
+    ids=[g.identity(q,d),g.identity(q,d)]
+    if ids[0] != ids[1] or not all(g.identity_matches(x) for x in ids):
+        raise RuntimeError("identity guard failed")
+    if [g.read_efs(q,f,g.SELECTOR_PATH),g.read_efs(q,f,g.SELECTOR_PATH)] != [(True,g.EXPECTED_SELECTOR)]*2:
+        raise RuntimeError("selector guard failed")
+    if [g.read_efs(q,f,g.BASE_PATH),g.read_efs(q,f,g.BASE_PATH)] != [(True,g.EXPECTED_BASE)]*2:
+        raise RuntimeError("RF baseline guard failed")
+    if [g.read_efs(q,f,g.FCC_FLAG_PATH,allow_absent=True),g.read_efs(q,f,g.FCC_FLAG_PATH,allow_absent=True)] != [(True,b"")]*2:
+        raise RuntimeError("MPSS FCC persistence guard failed")
+    if [g.get_fcc(q,f),g.get_fcc(q,f)] != [0,0]:
+        raise RuntimeError("FCC guard failed")
+    if [g.dms_mode(q,d),g.dms_mode(q,d)] != [0,0]:
+        raise RuntimeError("online guard failed")
+    print("CURRENT_MODULE_INTERNAL_QMI_GUARDS_OK")
+finally:
+    if f is not None:
+        try:g.raw.release(q,g.SERVICE_FOX,f)
+        except Exception:pass
+    if d is not None:
+        try:g.raw.release(q,g.SERVICE_DMS,d)
+        except Exception:pass
+    q.close()
+PY
+
+python3 <REDACTED-PRIVATE-PATH> \
+    --device /dev/mhi_ADB --timeout 90 \
+    "set -eu; test \"\$(sha256sum /etc/init.d/fcc_bypass | cut -d' ' -f1)\" = bafa844cff52e70b7812a39476548898f3d9ad04fd21e58b97e9d8b86f0681ce; test -L /etc/rc.d/S10fcc_bypass; test \"\$(cat /data/mbimd/disable_fcc_lock_flag)\" = 1; test \"\$(cat /tmp/fx_fcc_lock_status_flag)\" = 0; test \"\$(cat /tmp/fx_radio_status_flag)\" = 1; test \"\$(cat /tmp/fx_os_airplane_mode_flag)\" = 0; echo MODULE_HLOS_PERSISTENCE_GUARDS_OK" \
+    2>&1 | tee "$OUT/module_hlos_preflight.txt"
+grep -q MODULE_HLOS_PERSISTENCE_GUARDS_OK "$OUT/module_hlos_preflight.txt"
+grep -q ADB_RESYNC_OK "$OUT/module_hlos_preflight.txt"
+
+cp -a -- "$UPSTREAM_MODULES" "$OUT/backup/dw5934e-upstream-mhi.conf"
+cp -a -- "$VENDOR_MODULES" "$OUT/backup/zz-e11d-vendor-mhi.conf"
+cp -a -- "$VENDOR_POLICY" "$OUT/backup/zz-dw5934e-e11d-vendor-first.conf"
+cp -a -- "$VENDOR_UDEV" "$OUT/backup/10-dw5934e-e11d-vendor-first.rules"
+cp -a -- "$INITRAMFS_MODULES" "$OUT/backup/initramfs-tools.modules"
+for kernel in "${KERNELS[@]}"; do
+    sha256sum "/boot/initrd.img-$kernel" >>"$OUT/initramfs.before.sha256"
+done
+systemctl is-enabled "$VENDOR_BIND" >"$OUT/vendor_bind.before"
+systemctl is-enabled "$VENDOR_UNBIND" >"$OUT/vendor_unbind.before"
+
+rollback=1
+rollback_config() {
+    rc=$?
+    trap - EXIT
+    set +e
+    if [[ $rollback -eq 1 ]]; then
+        rm -f -- "$UPSTREAM_POLICY" "$UPSTREAM_POLICY.codex-20260826.tmp" \
+            "$INITRAMFS_MODULES.codex-20260826.tmp"
+        cp -a -- "$OUT/backup/zz-e11d-vendor-mhi.conf" "$VENDOR_MODULES"
+        cp -a -- "$OUT/backup/zz-dw5934e-e11d-vendor-first.conf" "$VENDOR_POLICY"
+        cp -a -- "$OUT/backup/10-dw5934e-e11d-vendor-first.rules" "$VENDOR_UDEV"
+        cp -a -- "$OUT/backup/initramfs-tools.modules" "$INITRAMFS_MODULES"
+        systemctl enable "$VENDOR_BIND" >/dev/null 2>&1 || true
+        systemctl enable "$VENDOR_UNBIND" >/dev/null 2>&1 || true
+        udevadm control --reload-rules >/dev/null 2>&1 || true
+        for kernel in "${KERNELS[@]}"; do
+            depmod -a "$kernel" >/dev/null 2>&1 || true
+            update-initramfs -u -k "$kernel" >/dev/null 2>&1 || true
+        done
+        echo "ROLLBACK_CONFIG_ATTEMPTED=true"
+    fi
+    exit "$rc"
+}
+trap rollback_config EXIT
+
+tmp_policy=$UPSTREAM_POLICY.codex-20260826.tmp
+cat >"$tmp_policy" <<'EOF'
+# The vendor pcie_mhi driver exposes only raw QMI/rmnet and cannot be managed by
+# ModemManager/NetworkManager. Keep the native mhi_pci_generic driver as owner.
+blacklist pcie_mhi
+EOF
+chown root:root "$tmp_policy"
+chmod 0644 "$tmp_policy"
+[[ $(sha256sum "$tmp_policy" | awk '{print $1}') == "$UPSTREAM_POLICY_SHA" ]]
+mv -- "$tmp_policy" "$UPSTREAM_POLICY"
+
+tmp_initramfs=$INITRAMFS_MODULES.codex-20260826.tmp
+sed -n '1,12p' "$OUT/backup/initramfs-tools.modules" >"$tmp_initramfs"
+cat >>"$tmp_initramfs" <<'EOF'
+
+# DW5934E E11D uses Ubuntu's native MHI/MBIM stack. The module list is kept in
+# /etc/modules-load.d/dw5934e-upstream-mhi.conf.
+EOF
+chown root:root "$tmp_initramfs"
+chmod 0644 "$tmp_initramfs"
+mv -- "$tmp_initramfs" "$INITRAMFS_MODULES"
+
+rm -f -- "$VENDOR_MODULES" "$VENDOR_POLICY" "$VENDOR_UDEV"
+systemctl disable "$VENDOR_BIND" >/dev/null
+systemctl disable "$VENDOR_UNBIND" >/dev/null
+systemctl stop "$QMI_HOLD" >/dev/null 2>&1 || true
+systemctl reset-failed "$VENDOR_BIND" "$QMI_HOLD" >/dev/null 2>&1 || true
+udevadm control --reload-rules
+
+for kernel in "${KERNELS[@]}"; do
+    depmod -a "$kernel"
+    update-initramfs -u -k "$kernel"
+done
+
+[[ $(sha256sum "$UPSTREAM_MODULES" | awk '{print $1}') == "$UPSTREAM_MODULES_SHA" ]]
+[[ $(sha256sum "$UPSTREAM_POLICY" | awk '{print $1}') == "$UPSTREAM_POLICY_SHA" ]]
+[[ ! -e $VENDOR_MODULES && ! -L $VENDOR_MODULES ]]
+[[ ! -e $VENDOR_POLICY && ! -L $VENDOR_POLICY ]]
+[[ ! -e $VENDOR_UDEV && ! -L $VENDOR_UDEV ]]
+! grep -Eq '^[[:space:]]*pcie_mhi([[:space:]]|$)' "$INITRAMFS_MODULES"
+[[ $(systemctl is-enabled "$VENDOR_BIND" 2>/dev/null || true) == disabled ]]
+[[ $(systemctl is-enabled "$VENDOR_UNBIND" 2>/dev/null || true) == disabled ]]
+[[ $(systemctl is-active "$QMI_HOLD" 2>/dev/null || true) != active ]]
+[[ $(readlink -f "$PCI/driver") == /sys/bus/pci/drivers/mhi_q ]]
+[[ -c /dev/mhi_QMI0 ]]
+[[ ! -e /etc/ModemManager/fcc-unlock.d/105b:e11d ]]
+
+for kernel in "${KERNELS[@]}"; do
+    listing="$OUT/initramfs.$kernel.list"
+    lsinitramfs "/boot/initrd.img-$kernel" >"$listing"
+    grep -q '^etc/modprobe.d/dw5934e-upstream-only.conf$' "$listing"
+    grep -q '^etc/modules-load.d/dw5934e-upstream-mhi.conf$' "$listing"
+    ! grep -q '^etc/modprobe.d/zz-dw5934e-e11d-vendor-first.conf$' "$listing"
+    ! grep -q '^etc/udev/rules.d/10-dw5934e-e11d-vendor-first.rules$' "$listing"
+    sha256sum "/boot/initrd.img-$kernel" >>"$OUT/initramfs.after.sha256"
+done
+
+qmicli -d /dev/mhi_QMI0 --device-open-qmi --dms-get-operating-mode \
+    | tee "$OUT/live_dms_after.txt"
+grep -q "Mode: 'online'" "$OUT/live_dms_after.txt"
+qmicli -d /dev/mhi_QMI0 --device-open-qmi --nas-get-serving-system \
+    | tee "$OUT/live_nas_after.txt"
+grep -q "Registration state: 'registered'" "$OUT/live_nas_after.txt"
+grep -q "PS: 'attached'" "$OUT/live_nas_after.txt"
+
+rollback=0
+trap - EXIT
+cat >"$OUT/next_step.txt" <<'EOF'
+TRUE_POWER_REMOVAL_COLD_START_REQUIRED
+Do not hot-unbind mhi_q. Shut the host down, remove all power for 30-60 seconds,
+then boot normally so mhi-pci-generic owns 105b:e11d from the first PCI probe.
+EOF
+echo "STATE=NATIVE_MHI_COLDBOOT_PREPARED"
+echo "LIVE_DRIVER_UNCHANGED=mhi_q"
+echo "HOST_FCC_UNLOCK_SERVICE_ACTIVE=false"
+echo "TRUE_POWER_REMOVAL_COLD_START_REQUIRED=true"
+echo "END=$(date -Ins)"

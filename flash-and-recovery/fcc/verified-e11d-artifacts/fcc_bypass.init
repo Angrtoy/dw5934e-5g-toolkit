@@ -1,0 +1,48 @@
+#!/bin/sh /etc/rc.common
+
+START=10
+STOP=90
+
+RFS_A=/data/persist/rfs/shared
+RFS_B=/data/persist/hlos_rfs/shared
+
+verify_rfs_dir() {
+    [ -d "$1" ] || return 1
+    [ ! -L "$1" ] || return 1
+    [ "$(stat -c '%a:%U:%G' "$1")" = '777:system:system' ] || return 1
+    [ "$(ls -dZ "$1" | awk '{print $1}')" = 'u:r:tftp_server.datafile' ] || return 1
+}
+
+write_byte() {
+    path=$1
+    value=$2
+    tmp="${path}.dw5934e.$$"
+
+    [ ! -L "$path" ] || return 1
+    [ ! -e "$tmp" ] || return 1
+    umask 022
+    printf "$value" > "$tmp" || return 1
+    chmod 0644 "$tmp" || { rm -f "$tmp"; return 1; }
+    mv -f "$tmp" "$path" || { rm -f "$tmp"; return 1; }
+}
+
+start() {
+    # RFS is a prerequisite only.  This service never creates, chmods, chowns,
+    # or relabels either persistent RFS directory.
+    verify_rfs_dir "$RFS_A" || return 210
+    verify_rfs_dir "$RFS_B" || return 211
+
+    [ -d /data/mbimd ] || mkdir -m 0755 /data/mbimd || return 212
+    [ ! -L /data/mbimd ] || return 212
+
+    # Exact one-byte values; these are not the ASCII strings "0\n"/"1\n".
+    write_byte /data/mbimd/disable_fcc_lock_flag '\001' || return 213
+    write_byte /tmp/fx_fcc_lock_status_flag '\000' || return 214
+    write_byte /tmp/fx_radio_status_flag '\001' || return 215
+    write_byte /tmp/fx_os_airplane_mode_flag '\000' || return 216
+    return 0
+}
+
+stop() {
+    return 0
+}
