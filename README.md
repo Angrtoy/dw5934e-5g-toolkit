@@ -81,12 +81,8 @@ dw5934e-open-source/
 │   ├── fcc/                       # FCC unlock persistence reference configurations
 │   └── coldboot-scripts/          # Two-phase coldboot recovery scripts
 │
-├── hardware-and-enclosure/        # Mechanical Engineering & 3D Printing
-│   ├── 5g-adapter-board/          # 5G M.2 to USB/RJ45 adapter STEP 3D model & specs
-│   └── mf650-cpe-case/            # Aleca MF650 10000mAh portable 5G CPE case (CC BY-NC 4.0)
-│       ├── build_mf650_cpe.py     # Parametric generation script
-│       ├── design_v5_assembly_fixed/ # Production-ready STEP & STL 3D models
-│       └── fit_coupon/            # Test fit coupons for SMA antenna holes
+├── hardware-and-enclosure/        # Mechanical Engineering & Adapter Board 3D CAD
+│   └── 5g-adapter-board/          # 5G M.2 to USB/RJ45 adapter STEP 3D model & specs
 │
 └── research-reports/              # In-Depth Engineering & Reverse-Engineering Papers
     ├── DW5934E_E11D_OEM_ROOT_FIX_REQUEST.md # Root cause report on false PA 136°C bug
@@ -156,10 +152,9 @@ sudo ./dw5934e-voice-control dial 10010 --confirm
 
 ---
 
-### 4. Hardware CAD & MF650 CPE Enclosure (`hardware-and-enclosure/`)
+### 4. Hardware Mechanical CAD (`hardware-and-enclosure/`)
 
 - **5G Adapter Board:** Accurate STEP AP214 3D PCBA assembly model (`71.00 × 62.35 mm`, 1.6mm thickness) with Raspberry Pi 5 Active Cooler clearance (13.70mm).
-- **Aleca MF650 10,000mAh Battery CPE Case:** Thickened enclosure (`160 × 90 × 37.9 mm`), 8-port SMA antenna array, front display window (`40.5 × 30.8 mm`), battery heat dissipation channels, and 3D printing slicing recommendations.
 
 ---
 
@@ -192,7 +187,7 @@ A very special, heartfelt thank you to our visionary sponsor:
 
 > [!NOTE]
 > **A Message of Gratitude:**  
-> This open-source project — including the in-depth reverse-engineering, hardware acquisition, automated Windows 11 installer, OpenWrt AutoNet integration, userspace voice control tooling, and physical 3D printable CAD models for the DW5934e / Qualcomm SDX72 platform — **would never have been possible without the generous backing, unwavering trust, and steadfast support of our sponsor**.
+> This open-source project — including the in-depth reverse-engineering, hardware acquisition, automated Windows 11 installer, OpenWrt AutoNet integration, userspace voice control tooling, and adapter board CAD specifications for the DW5934e / Qualcomm SDX72 platform — **would never have been possible without the generous backing, unwavering trust, and steadfast support of our sponsor**.
 >
 > Your dedication to open-source hardware research and community-driven engineering has turned complex enterprise-grade cellular technology into an open, accessible reality for developers and users worldwide. We express our deepest gratitude for your partnership and vision! 🙏✨
 
@@ -202,5 +197,4 @@ A very special, heartfelt thank you to our visionary sponsor:
 
 - **Core Code & Scripts:** Licensed under the [MIT License](LICENSE).
 - **QDL Utility:** Licensed under [BSD-3-Clause](flash-and-recovery/tools/qdl-v2.7.1/LICENSE).
-- **MF650 3D Enclosure Design:** Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) (Non-Commercial).
 - See [NOTICE.md](NOTICE.md) for full attribution details.

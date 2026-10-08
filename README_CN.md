@@ -25,10 +25,10 @@
 2. **OpenWrt / Linux 路由器适配门槛高：** 缺少开箱即用的 MHI 内核总线匹配、ModemManager 协同机制，在 Banana Pi BPI-R4（联发科 Filogic 880）等高端路由器上热插拔事件容易造成网卡反复复位。
 3. **EDL 9008 固件维护与救砖缺乏状态边界：** 混淆高通 9008（`05c6:9008`）与戴尔复合 EDL（`0489:e131`），缺乏安全停止机制，极易导致模块永久损坏。
 4. **缺少控制面通话工具：** 原生 MBIM 代理下缺少 VoLTE / IMS QMI 通话控制工具。
-5. **外壳结构与硬件散热难题：** 缺少匹配的 M.2 转接板 3D 机械模型，便携式 10000mAh 电池 5G CPE（阿乐卡 MF650）外壳散热和天线开孔工程化缺失。
+5. **硬件集成与结构参数：** 缺少匹配的 5G M.2 转接板 3D 机械模型，难以评估与被动/主动散热器的空间干涉。
 6. **偶发假过热掉网故障：** 部分固件版本在常温（34°C）下 MPSS 误报 PA 高温（136°C）触发 CFCM 关机停网，缺乏深层逆向分析。
 
-本项目将经过工程化检验的全套**开源驱动安装器、OpenWrt 自动拨号包、Linux QMI 通话工具、EDL 刷机工具链、3D 打印结构文件与逆向分析报告**统一整理开源，为 5G WWAN 社区提供标准、安全、合规的技术参考。
+本项目将经过工程化检验的全套**开源驱动安装器、OpenWrt 自动拨号包、Linux QMI 通话工具、EDL 刷机工具链、转接板机械 3D 模型与逆向分析报告**统一整理开源，为 5G WWAN 社区提供标准、安全、合规的技术参考。
 
 ---
 
@@ -81,12 +81,8 @@ dw5934e-open-source/
 │   ├── fcc/                       # FCC 解锁持久化配置样例
 │   └── coldboot-scripts/          # AP047 两阶段冷启动恢复脚本
 │
-├── hardware-and-enclosure/        # 硬件机械资料与 3D 打印外壳设计
-│   ├── 5g-adapter-board/          # 5G M.2 转接板 STEP 3D PCBA 装配模型与尺寸参数
-│   └── mf650-cpe-case/            # 阿乐卡 MF650 10000mAh 电池便携 5G CPE 加厚外壳
-│       ├── build_mf650_cpe.py     # 参数化建模脚本
-│       ├── design_v5_assembly_fixed/ # 可直接切片打印的 STEP / STL 3D 模型
-│       └── fit_coupon/            # SMA 螺母测试试片模型
+├── hardware-and-enclosure/        # 硬件机械资料与转接板 3D 模型
+│   └── 5g-adapter-board/          # 5G M.2 转接板 STEP 3D PCBA 装配模型与尺寸参数
 │
 └── research-reports/              # 深度技术逆向与 OEM 根因报告
     ├── DW5934E_E11D_OEM_ROOT_FIX_REQUEST.md # 假 PA 136°C 掉网故障完整逆向报告
@@ -155,13 +151,9 @@ sudo ./dw5934e-voice-control dial 10010 --confirm
 
 ---
 
-### 4. 机械工程资料与 3D 打印外壳 (`hardware-and-enclosure/`)
+### 4. 机械工程资料与转接板模型 (`hardware-and-enclosure/`)
 
 - **5G 转接板结构资料：** 包含 EasyEDA Pro 导出的完整 `Board` 装配 STEP 3D 模型（包络 `71.00 × 62.35 mm`，板厚 1.6mm），精准预留树莓派 5 散热器（Raspberry Pi 5 Active Cooler，总高度 13.70mm）避让空间。
-- **阿乐卡 MF650 10000mAh 电池 5G CPE 外壳：** 
-  - 外形尺寸加厚至 `160 × 90 × 37.9 mm`，提供充足风道。
-  - 后盖阵列布置 **8 个 Ø6.6 mm SMA 天线孔**（2×4 布局，22mm 孔距），完美适配全频段外置天线。
-  - 提供参数化生成脚本与全套生产级 STL / STEP 模型。
 
 ---
 
@@ -194,7 +186,7 @@ sudo ./dw5934e-voice-control dial 10010 --confirm
 
 > [!NOTE]
 > **致赞助商的衷心感谢信：**  
-> 本项目能够从最初的实验室逆向分析、硬件测试样卡采购、转接底板工程测试，到全套 Windows 11 保守安装器、OpenWrt 路由器固件适配、Linux QMI 通话工具链、以及 3D 打印加厚 CPE 外壳的完整落地与全面开源，**离不开赞助商始终如一的慷慨赞助、无比的信任与坚定支持！**
+> 本项目能够从最初的实验室逆向分析、硬件测试样卡采购、转接底板工程测试，到全套 Windows 11 保守安装器、OpenWrt 路由器固件适配、Linux QMI 通话工具链、以及 5G 转接底板机械尺寸模型的完整落地与全面开源，**离不开赞助商始终如一的慷慨赞助、无比的信任与坚定支持！**
 >
 > 正是因为有您对开源精神与底层硬件工程的倾力投入，这项充满挑战的企业级 5G 模块攻关成果才得以跨越技术壁垒，毫无保留地公布给全球开发者与开源社区。  
 > 
@@ -206,5 +198,5 @@ sudo ./dw5934e-voice-control dial 10010 --confirm
 
 - **核心代码与脚本：** 遵循 [MIT License](LICENSE)。
 - **QDL 刷机工具：** 遵循 [BSD-3-Clause](flash-and-recovery/tools/qdl-v2.7.1/LICENSE)。
-- **MF650 3D 打印外壳模型：** 遵循 [CC BY-NC 4.0 (知识共享-署名-非商业性使用)](https://creativecommons.org/licenses/by-nc/4.0/)。
+- 详细第三方许可声明见 [NOTICE.md](NOTICE.md)。
 - 详细第三方许可声明见 [NOTICE.md](NOTICE.md)。
